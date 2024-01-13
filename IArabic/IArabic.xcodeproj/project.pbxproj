@@ -13,6 +13,9 @@
 		AD57535B2B52BA3400FA7683 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD57535A2B52BA3400FA7683 /* Preview Assets.xcassets */; };
 		AD57535D2B52BA3400FA7683 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD57535C2B52BA3400FA7683 /* Persistence.swift */; };
 		AD5753602B52BA3400FA7683 /* IArabic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AD57535E2B52BA3400FA7683 /* IArabic.xcdatamodeld */; };
+		ADA795042B52C044003B14A9 /* CardsWordsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA795032B52C044003B14A9 /* CardsWordsView.swift */; };
+		ADA795072B52C269003B14A9 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA795062B52C269003B14A9 /* CustomTabBar.swift */; };
+		ADA7950B2B52C347003B14A9 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA7950A2B52C347003B14A9 /* Tab.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +26,9 @@
 		AD57535A2B52BA3400FA7683 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AD57535C2B52BA3400FA7683 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		AD57535F2B52BA3400FA7683 /* IArabic.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IArabic.xcdatamodel; sourceTree = "<group>"; };
+		ADA795032B52C044003B14A9 /* CardsWordsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsWordsView.swift; sourceTree = "<group>"; };
+		ADA795062B52C269003B14A9 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
+		ADA7950A2B52C347003B14A9 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +61,8 @@
 		AD5753522B52BA3300FA7683 /* IArabic */ = {
 			isa = PBXGroup;
 			children = (
+				ADA795052B52C22A003B14A9 /* TabView */,
+				ADA795002B52BFF8003B14A9 /* CardsWords */,
 				AD5753532B52BA3300FA7683 /* IArabicApp.swift */,
 				AD5753552B52BA3300FA7683 /* ContentView.swift */,
 				AD5753572B52BA3400FA7683 /* Assets.xcassets */,
@@ -71,6 +79,55 @@
 				AD57535A2B52BA3400FA7683 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		ADA795002B52BFF8003B14A9 /* CardsWords */ = {
+			isa = PBXGroup;
+			children = (
+				ADA795022B52C02C003B14A9 /* ViewModel */,
+				ADA795012B52C01A003B14A9 /* View */,
+			);
+			path = CardsWords;
+			sourceTree = "<group>";
+		};
+		ADA795012B52C01A003B14A9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				ADA795032B52C044003B14A9 /* CardsWordsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		ADA795022B52C02C003B14A9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		ADA795052B52C22A003B14A9 /* TabView */ = {
+			isa = PBXGroup;
+			children = (
+				ADA795092B52C339003B14A9 /* View */,
+				ADA795082B52C32C003B14A9 /* Model */,
+			);
+			path = TabView;
+			sourceTree = "<group>";
+		};
+		ADA795082B52C32C003B14A9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				ADA7950A2B52C347003B14A9 /* Tab.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		ADA795092B52C339003B14A9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				ADA795062B52C269003B14A9 /* CustomTabBar.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,9 +201,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD57535D2B52BA3400FA7683 /* Persistence.swift in Sources */,
+				ADA7950B2B52C347003B14A9 /* Tab.swift in Sources */,
 				AD5753562B52BA3300FA7683 /* ContentView.swift in Sources */,
 				AD5753542B52BA3300FA7683 /* IArabicApp.swift in Sources */,
 				AD5753602B52BA3400FA7683 /* IArabic.xcdatamodeld in Sources */,
+				ADA795072B52C269003B14A9 /* CustomTabBar.swift in Sources */,
+				ADA795042B52C044003B14A9 /* CardsWordsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +347,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -315,6 +376,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
