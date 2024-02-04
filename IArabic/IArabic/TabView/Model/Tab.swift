@@ -13,3 +13,4 @@ enum Tab: String, CaseIterable {
     case wordCards = "menucard"
     case dictionary = "character.book.closed"
 }
+

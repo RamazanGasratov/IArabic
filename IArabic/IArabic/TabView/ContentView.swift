@@ -14,7 +14,7 @@ struct ContentView: View {
         UITabBar.appearance().isHidden = true
     }
     
-    @State var currentTab: Tab = .library
+    @State var currentTab: Tab = .wordCards
 
     var body: some View {
         VStack {
@@ -23,7 +23,7 @@ struct ContentView: View {
                 Text("Библиотека")
                     .applyBG()
                     .tag(Tab.library)
-                CardsWordsView()
+                CardWordsView()
                     .tag(Tab.wordCards)
                 Text("Словарь")
                     .applyBG()
