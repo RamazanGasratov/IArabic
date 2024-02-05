@@ -14,24 +14,32 @@ struct ContentView: View {
         UITabBar.appearance().isHidden = true
     }
     
+    @State private var selectedTab: Int = 0
+    
     @State var currentTab: Tab = .wordCards
 
     var body: some View {
-        VStack {
-            TabView(selection: $currentTab){
-                //MARK: Need to Apply BG For Each Tab View
-                Text("Библиотека")
-                    .applyBG()
-                    .tag(Tab.library)
-                CardWordsView()
-                    .tag(Tab.wordCards)
-                Text("Словарь")
-                    .applyBG()
-                    .tag(Tab.dictionary)
+        VStack(spacing: 0) {
+            Spacer()
+            
+            VStack {
+                switch Tab.allCases[selectedTab] {
+                case.library:
+                    CardWordsView()
+                case.wordCards:
+                    CardWordsView()
+                case.dictionary:
+                    CardWordsView()
+                }
             }
-            //MARK: Custom Tab Bar
-            CustomTabBar(currentTab: $currentTab)
+            
+            Spacer()
+            
+            CustomTabs(currentTab: $currentTab, tabs: Tab.allCases)
+                .background(Color.custom.white)
+                .border(Color.custom.lightGray, width: 0.3)
         }
+        .background(Color.custom.backgroundColor).ignoresSafeArea()
     }
 
 }
@@ -46,7 +54,7 @@ extension View {
         self
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background {
-                Color(.gray)
+                Color.custom.white
                     .ignoresSafeArea()
             }
     }

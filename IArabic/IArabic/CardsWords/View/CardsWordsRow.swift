@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CardsWordsRow: View {
-    @State private var screenWith: CGFloat = 10
+    @State private var screenWith: CGFloat = 0
     @State private var cardHeight: CGFloat = 0
     
     let widthScale = 0.80
@@ -28,7 +28,7 @@ struct CardsWordsRow: View {
                     CardWordsItem(textTitle: cards[index].wordArabic, textTranslate: cards[index].wordTranslate, image: cards[index].imageURL)
                     
                         .frame(width: screenWith * widthScale, height: cardHeight)
-                        .background(.yellow)
+                        .background(Color.custom.white)
                         .overlay {
                             Color.white.opacity( 1 - cardScale(for: index, proportion: 0.3))
                         }
@@ -57,14 +57,14 @@ struct CardsWordsRow: View {
                                 }
                         )
                     }
-                }
-                .onAppear {
-                    screenWith = reader.size.width
-                    cardHeight = screenWith * widthScale * cardAspectRatio
-                }
-                .offset(x: 16, y: 30)
+            }
+            .shadow(radius: 7)
+            .onAppear {
+                screenWith = reader.size.width
+                cardHeight = screenWith * widthScale * cardAspectRatio
+            }
+            .offset(x: 16, y: 30)
         }
-        
     }
     
     func cardOffset(for index: Int) -> CGFloat {

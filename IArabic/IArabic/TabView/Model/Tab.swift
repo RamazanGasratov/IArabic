@@ -7,10 +7,25 @@
 
 import SwiftUI
 
-//MARK: Enum For Tabs with Rawvalue as Asset Image
-enum Tab: String, CaseIterable {
-    case library = "building.columns"
-    case wordCards = "menucard"
-    case dictionary = "character.book.closed"
+protocol TabItemProtocol: CaseIterable {
+    var index: Int { get }
+    var image: Image { get }
 }
 
+enum Tab: String, TabItemProtocol {
+    case library = "Библиотека"
+    case wordCards = "Карточки слов"
+    case dictionary = "Словарь"
+    
+    var index: Int {
+        return Tab.allCases.firstIndex(of: self) ?? 0
+    }
+    
+    var image: Image {
+        switch self {
+        case.library: return Image(systemName: "building.columns")
+        case.wordCards: return Image(systemName: "menucard")
+        case.dictionary: return Image(systemName: "character.book.closed")
+        }
+    }
+}

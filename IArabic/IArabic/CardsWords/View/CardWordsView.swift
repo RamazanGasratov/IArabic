@@ -8,12 +8,36 @@
 import SwiftUI
 
 struct CardWordsView: View {
+    @State private var isToggleOn = false
+    
     var body: some View {
-        VStack {
-            Text("Tут что то будет ")
-            
-            CardsWordsRow()
+        NavigationView {
+            VStack(spacing: -12) {
+                showAssociation
+                
+                CardsWordsRow()
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(Text("Все слова"))
+            .background(Color.custom.backgroundColor)
         }
+    }
+    
+    private var showAssociation: some View {
+        HStack {
+            Text("Показать ассоциацию")
+                .foregroundColor(Color.custom.black)
+                .padding()
+            Spacer()
+            
+            Toggle("", isOn: $isToggleOn)
+                .labelsHidden()
+                .padding()
+        }
+        .frame(height: 54)
+        .background(Color.custom.white)
+        .cornerRadius(20)
+        .padding()
     }
 }
 
