@@ -7,45 +7,49 @@
 
 import SwiftUI
 
-struct CustomTabBar: View {
+struct CustomTabBar_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+
+struct CustomTabs<T: TabItemProtocol>: View {
     @Binding var currentTab: Tab
-    
+
+    let tabs: [T]
+
     var body: some View {
         GeometryReader { proxy in
             let width = proxy.size.width
-            
-            HStack(spacing: 0) {
-                ForEach(Tab.allCases, id: \.rawValue) { tab in
-                    Button {
+            HStack {
+                ForEach(Tab.allCases, id: \.rawValue) { item in
+                    Button(action: {
                         withAnimation(.easeInOut(duration: 0.2)) {
-                            currentTab = tab
+                            self.currentTab = item
                         }
-                    } label : {
-                        Image(systemName: tab.rawValue)
-                            .renderingMode(/*@START_MENU_TOKEN@*/.template/*@END_MENU_TOKEN@*/)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 30, height: 30)
-                            .frame(maxWidth: .infinity)
-                            .foregroundColor(currentTab == tab ? Color(.purple) : .gray)
+                    }) {
+                        TabItemView(item: item, isSelected: self.currentTab.index == item.index)
+                    }
+                    
+                    if item.index != tabs.count - 1 {
+                        Spacer(minLength: 0)
                     }
                 }
             }
             .frame(maxWidth: .infinity)
             .background(alignment: .leading) {
                 Circle()
-                    .fill(Color.yellow)
+                    .fill(Color.custom.yellow)
                     .frame(width: 56, height: 56)
-                    .offset(x: 32)
+                    .offset(x: 32.5)
                     .offset(x: indicatorOffset(with: width))
             }
         }
-        .frame(height: 30)
-        .padding(.bottom, 10)
+        .frame(height: 50)
+        .padding(.bottom, 5)
         .padding([.horizontal, .top])
     }
     
-    //MARK: Indicator Offset
     func indicatorOffset(with: CGFloat) -> CGFloat {
         let index = CGFloat(getIndex())
         if index == 0 {return 0}
@@ -65,10 +69,17 @@ struct CustomTabBar: View {
             return 2
         }
     }
+
 }
 
-struct CustomTabBar_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+struct TabItemView<T: TabItemProtocol>: View {
+    let item: T
+    let isSelected: Bool
+    
+    var body: some View {
+        item.image.renderingMode(.template)
+            .font(.system(size: 25))
+            .frame(maxWidth: .infinity)
+            .foregroundColor(isSelected ? Color.custom.white : Color.custom.lightGray)
     }
 }
