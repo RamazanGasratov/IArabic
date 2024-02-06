@@ -15,10 +15,19 @@ struct CardWordsView: View {
             VStack(spacing: -12) {
                 showAssociation
                 
-                CardsWordsRow()
+                CardsWordsRow2()
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(Text("Все слова"))
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {} label: {
+                        Image(systemName: "plus")
+                            .foregroundColor(Color.custom.yellow)
+                    }
+                    .font(.system(size: 20))
+                }
+            }
             .background(Color.custom.backgroundColor)
         }
     }
@@ -35,7 +44,7 @@ struct CardWordsView: View {
                 .padding()
         }
         .frame(height: 54)
-        .background(Color.custom.white)
+        .background(Color.white)
         .cornerRadius(20)
         .padding()
     }

@@ -16,43 +16,40 @@ extension Color {
         var customOrange: Color { Color("customOrange", bundle: nil) }
         
         // Blue
-        var blue: Color { Color("blue", bundle: nil) }
+        var blue: Color { Color("customBlue", bundle: nil) }
         
         // Light Blue
-        var lightBlue: Color { Color("lightBlue", bundle: nil) }
+        var lightBlue: Color { Color("customlightBlue", bundle: nil) }
         
         // Black
-        var black: Color { Color("black", bundle: nil) }
+        var black: Color { Color("customBlack", bundle: nil) }
         
         // White
-        var white: Color { Color("white", bundle: nil) }
+        var white: Color { Color("customWhite", bundle: nil) }
         
         // Light Green
-        var lightGreen: Color { Color("lightGreen", bundle: nil) }
+        var lightGreen: Color { Color("customLightGreen", bundle: nil) }
         
         // Red
-        var red: Color { Color("red", bundle: nil) }
-        
-        // Dark Gray
-        var darkGray: Color { Color("darkGray", bundle: nil) }
+        var red: Color { Color("customRed", bundle: nil) }
         
         // Violet
-        var violet: Color { Color("violet", bundle: nil) }
+        var violet: Color { Color("customViolet", bundle: nil) }
         
         // Background Color
-        var backgroundColor: Color { Color("backgroundColor", bundle: nil) }
+        var backgroundColor: Color { Color("customBackgroundColor", bundle: nil) }
         
         // Yellow
-        var yellow: Color { Color("yellow", bundle: nil) }
+        var yellow: Color { Color("customYellow", bundle: nil) }
         
         // Light Gray
-        var lightGray: Color { Color("lightGray", bundle: nil) }
+        var lightGray: Color { Color("customLightGray", bundle: nil) }
         
         // Light Yellow
-        var lightYellow: Color { Color("lightYellow", bundle: nil) }
+        var lightYellow: Color { Color("customlightYellow", bundle: nil) }
         
         // Light White
-        var lightWhite: Color { Color("lightWhite", bundle: nil) }
+        var lightWhite: Color { Color("customlightWhite", bundle: nil) }
     }
 }
 

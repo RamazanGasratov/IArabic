@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+
+class CardViewModel: ObservableObject {
+  @Published var cards = WordsData.getAllWords
+}
+
 struct CardsWordsRow: View {
     @State private var screenWith: CGFloat = 0
     @State private var cardHeight: CGFloat = 0
@@ -14,18 +19,18 @@ struct CardsWordsRow: View {
     let widthScale = 0.80
     let cardAspectRatio = 1.75
     
-    let cards = WordsData.getAllWords
+    @ObservedObject var vm = CardViewModel()
     
-    @State var activeCardIndex = 0
-    @State var draggOffset: CGFloat = 0
+    @State var activeCardIndex = 1
+    @State var draggOffset: CGFloat = 1
     
     var body: some View {
    
         GeometryReader { reader in
             ZStack {
-                ForEach(cards.indices, id: \.self) { index in
+                ForEach(vm.cards.indices, id: \.self) { index in
                     
-                    CardWordsItem(textTitle: cards[index].wordArabic, textTranslate: cards[index].wordTranslate, image: cards[index].imageURL)
+                    CardWordsItem(textTitle: vm.cards[index].wordArabic, textTranslate: vm.cards[index].wordTranslate, image: vm.cards[index].imageURL)
                     
                         .frame(width: screenWith * widthScale, height: cardHeight)
                         .background(Color.custom.white)
@@ -33,37 +38,42 @@ struct CardsWordsRow: View {
                             Color.white.opacity( 1 - cardScale(for: index, proportion: 0.3))
                         }
                         .cornerRadius(20)
-                        .offset(x: cardOffset(for: index))
-                        .scaleEffect(x: cardScale(for: index), y: cardScale(for: index))
-                        .zIndex(-Double(index))
-                        .gesture(
-                        DragGesture()
-                                .onChanged { value in
-                                    self.draggOffset = value.translation.width
-                                }.onEnded{ value in
-                                    let threshold = screenWith * 0.2
-                                    
-                                    withAnimation {
-                                        if value.translation.width < -threshold {
-                                            activeCardIndex = min(activeCardIndex + 1, cards.count - 1)
-                                        } else if value.translation.width > threshold  {
-                                            activeCardIndex = max(activeCardIndex - 1, 0)
-                                        }
-                                    }
-                                    
-                                    withAnimation {
-                                        draggOffset = 0
-                                    }
-                                }
-                        )
-                    }
+//                        .offset(x: cardOffset(for: index))
+//                        .scaleEffect(x: cardScale(for: index), y: cardScale(for: index))
+//                        .zIndex(-Double(index))
+//                        .gesture(
+//                        DragGesture()
+//                                .onChanged { value in
+//                                    self.draggOffset = value.translation.width
+//                                }.onEnded{ value in
+//                                    let threshold = screenWith * 0.2
+//                                    
+//                                    withAnimation {
+//                                        if value.translation.width < -threshold {
+//                                            activeCardIndex = min(activeCardIndex + 1, vm.cards.count - 1)
+//                                        } else if value.translation.width > threshold  {
+//                                            activeCardIndex = max(activeCardIndex - 1, 0)
+//                                        }
+//                                    }
+//                                    
+//                                    withAnimation {
+//                                        draggOffset = 0
+//                                    }
+//                                }
+//                        )
+//                    }
+            
+//            .shadow(radius: 7)
+//            .onAppear {
+//                print("CardsWordsRow appears")
+//                screenWith = reader.size.width
+//                cardHeight = screenWith * widthScale * cardAspectRatio
             }
-            .shadow(radius: 7)
-            .onAppear {
-                screenWith = reader.size.width
-                cardHeight = screenWith * widthScale * cardAspectRatio
+//            .onDisappear {
+//                print("CardsWordsRow disappears")
             }
-            .offset(x: 16, y: 30)
+            
+//            .offset(x: 16, y: 30)
         }
     }
     
@@ -111,5 +121,109 @@ struct CardsWordsRow: View {
 }
 
 #Preview {
-    CardsWordsRow()
+    CardWordsView()
+}
+
+
+struct CardsWordsRow2: View {
+    
+    @State var currentIndex: Int = 0
+    
+    @State var words = WordsData.getAllWords
+    
+    var body: some View {
+        VStack(spacing: 15) {
+            SnapCarousel(index: $currentIndex, items: words) { word in
+                GeometryReader { proxy in
+                    let size = proxy.size
+                    
+                    CardWordsItem(textTitle: word.wordTranslate, textTranslate: word.wordArabic, image: word.imageURL)
+                        .frame(width: size.width)
+                        .cornerRadius(10)
+                }
+            }
+            .padding(.vertical, 40)
+        }
+        .frame(maxHeight: .infinity, alignment: .top)
+        .onAppear {
+            words
+        }
+    }
+}
+
+
+struct SnapCarousel<Content: View, T: Identifiable>: View {
+    var content: (T) -> Content
+    var list: [T]
+    
+    //Properties..
+    var spacing: CGFloat
+    var tralligSpace: CGFloat
+    @Binding var index: Int
+    
+    init(spacing: CGFloat = 15, trailingSpace: CGFloat = 100, index: Binding<Int>, items: [T], @ViewBuilder content: @escaping (T) -> Content) {
+        
+        self.list = items
+        self.spacing = spacing
+        self.tralligSpace = trailingSpace
+        self._index = index
+        self.content = content
+    }
+    
+    @GestureState var offset: CGFloat = 0
+    @State var currentIndex: Int = 0
+    
+    var body: some View {
+        
+        GeometryReader { proxy in
+            
+            //Setting correct Width for snap Carousel...
+            let with = proxy.size.width - (tralligSpace - spacing)
+            let adjustMentWidth = (tralligSpace / 2) - spacing
+            
+            HStack(spacing: spacing) {
+                ForEach(list) { item in
+                     content(item)
+                        .frame(width: max(proxy.size.width - tralligSpace, 0))
+                }
+            }
+            .padding(.horizontal, spacing)
+            .offset(x: (CGFloat(currentIndex) * -with) + (currentIndex != 0 ?  adjustMentWidth : 0)  + offset)
+            .gesture(
+                
+            DragGesture()
+                .updating($offset, body: { value, out, _ in
+                    
+                    
+                    out = value.translation.width
+                })
+                .onEnded({ value in
+                    
+                    
+                    // Updating current index..
+                    let offsetX = value.translation.width
+                    
+                    let proggress = -offsetX / with
+                    
+                    let roundIndex = proggress.rounded()
+                    
+                    currentIndex = max(min(currentIndex + Int(roundIndex), list.count - 1), 0)
+                    
+                    
+                    currentIndex = index
+                })
+                .onChanged({ value in
+                    let offsetX = value.translation.width
+                    
+                    let proggress = -offsetX / with
+                    
+                    let roundIndex = proggress.rounded()
+                    
+                    index = max(min(currentIndex + Int(roundIndex), list.count - 1), 0)
+                })
+            )
+        }
+        // Animation when offset = 0
+        .animation(.easeInOut, value: offset == 0)
+    }
 }

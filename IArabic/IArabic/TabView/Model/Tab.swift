@@ -13,9 +13,9 @@ protocol TabItemProtocol: CaseIterable {
 }
 
 enum Tab: String, TabItemProtocol {
-    case library = "Библиотека"
-    case wordCards = "Карточки слов"
-    case dictionary = "Словарь"
+    case library
+    case wordCards
+    case dictionary
     
     var index: Int {
         return Tab.allCases.firstIndex(of: self) ?? 0
