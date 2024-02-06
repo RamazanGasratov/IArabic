@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD1499652B72954E007DAB97 /* TestScen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1499642B72954E007DAB97 /* TestScen.swift */; };
 		AD47DA7F2B700EF90041C460 /* CardWordsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD47DA7E2B700EF90041C460 /* CardWordsItem.swift */; };
 		AD47DA812B70190C0041C460 /* CardWordsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD47DA802B70190C0041C460 /* CardWordsView.swift */; };
 		AD5753542B52BA3300FA7683 /* IArabicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5753532B52BA3300FA7683 /* IArabicApp.swift */; };
@@ -42,6 +43,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AD1499642B72954E007DAB97 /* TestScen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScen.swift; sourceTree = "<group>"; };
 		AD47DA7E2B700EF90041C460 /* CardWordsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardWordsItem.swift; sourceTree = "<group>"; };
 		AD47DA802B70190C0041C460 /* CardWordsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardWordsView.swift; sourceTree = "<group>"; };
 		AD5753502B52BA3300FA7683 /* IArabic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IArabic.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +118,7 @@
 				AD57535C2B52BA3400FA7683 /* Persistence.swift */,
 				AD57535E2B52BA3400FA7683 /* IArabic.xcdatamodeld */,
 				AD5753592B52BA3400FA7683 /* Preview Content */,
+				AD1499642B72954E007DAB97 /* TestScen.swift */,
 			);
 			path = IArabic;
 			sourceTree = "<group>";
@@ -322,6 +325,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD57535D2B52BA3400FA7683 /* Persistence.swift in Sources */,
+				AD1499652B72954E007DAB97 /* TestScen.swift in Sources */,
 				ADB892542B5BD24D0001C18C /* CardWordsModel.swift in Sources */,
 				AD47DA812B70190C0041C460 /* CardWordsView.swift in Sources */,
 				ADA7950B2B52C347003B14A9 /* Tab.swift in Sources */,

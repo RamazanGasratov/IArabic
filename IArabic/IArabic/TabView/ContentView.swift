@@ -14,7 +14,7 @@ struct ContentView: View {
         UITabBar.appearance().isHidden = true
     }
     
-    @State private var selectedTab: Int = 0
+    @State private var selectedTab: Int = 1
     
     @State var currentTab: Tab = .wordCards
 
@@ -25,17 +25,20 @@ struct ContentView: View {
             VStack {
                 switch Tab.allCases[selectedTab] {
                 case.library:
-                    CardWordsView()
+                    TestScen()
+               
                 case.wordCards:
                     CardWordsView()
+                   
                 case.dictionary:
-                    CardWordsView()
+                    TestScen()
+                    
                 }
             }
             
             Spacer()
             
-            CustomTabs(currentTab: $currentTab, tabs: Tab.allCases)
+            CustomTabs(selectedIndex: $selectedTab, tabs: Tab.allCases)
                 .background(Color.custom.white)
                 .border(Color.custom.lightGray, width: 0.3)
         }

@@ -7,28 +7,21 @@
 
 import SwiftUI
 
-struct CustomTabBar_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
-
-struct CustomTabs<T: TabItemProtocol>: View {
-    @Binding var currentTab: Tab
-
-    let tabs: [T]
+struct CustomTabs: View {
+    @Binding var selectedIndex: Int
+    let tabs: [Tab]
 
     var body: some View {
         GeometryReader { proxy in
-            let width = proxy.size.width
+//            let width = proxy.size.width
             HStack {
-                ForEach(Tab.allCases, id: \.rawValue) { item in
+                ForEach(tabs, id: \.index) { item in
                     Button(action: {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            self.currentTab = item
-                        }
+                      
+                            self.selectedIndex = item.index
+                      
                     }) {
-                        TabItemView(item: item, isSelected: self.currentTab.index == item.index)
+                        TabItemView(item: item, isSelected: self.selectedIndex == item.index)
                     }
                     
                     if item.index != tabs.count - 1 {
@@ -36,39 +29,39 @@ struct CustomTabs<T: TabItemProtocol>: View {
                     }
                 }
             }
-            .frame(maxWidth: .infinity)
-            .background(alignment: .leading) {
-                Circle()
-                    .fill(Color.custom.yellow)
-                    .frame(width: 56, height: 56)
-                    .offset(x: 32.5)
-                    .offset(x: indicatorOffset(with: width))
-            }
+  
+//            .background(alignment: .leading) {
+//                Circle()
+//                    .fill(Color.custom.yellow)
+//                    .frame(width: 56, height: 56)
+//                    .offset(x: 32.5)
+//                    .offset(x: indicatorOffset(with: width))
+//            }
         }
         .frame(height: 50)
         .padding(.bottom, 5)
         .padding([.horizontal, .top])
     }
+//    
+//    func indicatorOffset(with: CGFloat) -> CGFloat {
+//        let index = CGFloat(getIndex())
+//        if index == 0 {return 0}
+//        
+//        let buttonWith = with / CGFloat(Tab.allCases.count)
+//        
+//        return index * buttonWith
+//    }
     
-    func indicatorOffset(with: CGFloat) -> CGFloat {
-        let index = CGFloat(getIndex())
-        if index == 0 {return 0}
-        
-        let buttonWith = with / CGFloat(Tab.allCases.count)
-        
-        return index * buttonWith
-    }
-    
-    func getIndex() -> Int {
-        switch currentTab {
-        case .library:
-            return 0
-        case .wordCards:
-            return 1
-        case .dictionary:
-            return 2
-        }
-    }
+//    func getIndex() -> Int {
+//        switch tab {
+//        case .library:
+//            return 0
+//        case .wordCards:
+//            return 1
+//        case .dictionary:
+//            return 2
+//        }
+//    }
 
 }
 
@@ -80,6 +73,12 @@ struct TabItemView<T: TabItemProtocol>: View {
         item.image.renderingMode(.template)
             .font(.system(size: 25))
             .frame(maxWidth: .infinity)
-            .foregroundColor(isSelected ? Color.custom.white : Color.custom.lightGray)
+            .foregroundColor(isSelected ? Color.custom.customOrange : Color.custom.lightGray)
+    }
+}
+
+struct CustomTabBar_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
     }
 }
