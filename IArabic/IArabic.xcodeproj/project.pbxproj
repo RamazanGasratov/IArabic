@@ -16,6 +16,7 @@
 		AD57535B2B52BA3400FA7683 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD57535A2B52BA3400FA7683 /* Preview Assets.xcassets */; };
 		AD57535D2B52BA3400FA7683 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD57535C2B52BA3400FA7683 /* Persistence.swift */; };
 		AD5753602B52BA3400FA7683 /* IArabic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AD57535E2B52BA3400FA7683 /* IArabic.xcdatamodeld */; };
+		AD59A9C22B73D0DB0061C0E3 /* NewWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD59A9C12B73D0DB0061C0E3 /* NewWordView.swift */; };
 		ADA795042B52C044003B14A9 /* CardsWordsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA795032B52C044003B14A9 /* CardsWordsRow.swift */; };
 		ADA795072B52C269003B14A9 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA795062B52C269003B14A9 /* CustomTabBar.swift */; };
 		ADA7950B2B52C347003B14A9 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA7950A2B52C347003B14A9 /* Tab.swift */; };
@@ -53,6 +54,7 @@
 		AD57535A2B52BA3400FA7683 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AD57535C2B52BA3400FA7683 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		AD57535F2B52BA3400FA7683 /* IArabic.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IArabic.xcdatamodel; sourceTree = "<group>"; };
+		AD59A9C12B73D0DB0061C0E3 /* NewWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWordView.swift; sourceTree = "<group>"; };
 		ADA795032B52C044003B14A9 /* CardsWordsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsWordsRow.swift; sourceTree = "<group>"; };
 		ADA795062B52C269003B14A9 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		ADA7950A2B52C347003B14A9 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 		AD5753522B52BA3300FA7683 /* IArabic */ = {
 			isa = PBXGroup;
 			children = (
+				AD59A9BF2B73D0BF0061C0E3 /* NewWord */,
 				ADBA06742B70F98F004BCF69 /* Info.plist */,
 				ADBA064D2B70F73B004BCF69 /* Common */,
 				ADA795052B52C22A003B14A9 /* TabView */,
@@ -129,6 +132,22 @@
 				AD57535A2B52BA3400FA7683 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AD59A9BF2B73D0BF0061C0E3 /* NewWord */ = {
+			isa = PBXGroup;
+			children = (
+				AD59A9C02B73D0C90061C0E3 /* View */,
+			);
+			path = NewWord;
+			sourceTree = "<group>";
+		};
+		AD59A9C02B73D0C90061C0E3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				AD59A9C12B73D0DB0061C0E3 /* NewWordView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		ADA795002B52BFF8003B14A9 /* CardsWords */ = {
@@ -327,6 +346,7 @@
 				AD57535D2B52BA3400FA7683 /* Persistence.swift in Sources */,
 				AD1499652B72954E007DAB97 /* TestScen.swift in Sources */,
 				ADB892542B5BD24D0001C18C /* CardWordsModel.swift in Sources */,
+				AD59A9C22B73D0DB0061C0E3 /* NewWordView.swift in Sources */,
 				AD47DA812B70190C0041C460 /* CardWordsView.swift in Sources */,
 				ADA7950B2B52C347003B14A9 /* Tab.swift in Sources */,
 				ADBA06782B70FB2F004BCF69 /* Ext+Fonts.swift in Sources */,

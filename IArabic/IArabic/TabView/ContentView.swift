@@ -57,7 +57,7 @@ extension View {
         self
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background {
-                Color.custom.white
+                Color.custom.backgroundColor
                     .ignoresSafeArea()
             }
     }

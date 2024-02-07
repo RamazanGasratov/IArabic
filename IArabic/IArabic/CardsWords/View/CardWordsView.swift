@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CardWordsView: View {
     @State private var isToggleOn = false
+    @State private var isDestinationNewWord = false
     
     var body: some View {
         NavigationView {
@@ -21,7 +22,10 @@ struct CardWordsView: View {
             .navigationTitle(Text("Все слова"))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {} label: {
+                    NavigationLink {
+                        NewWordView()
+                            .applyBG()
+                    } label: {
                         Image(systemName: "plus")
                             .foregroundColor(Color.custom.yellow)
                     }
