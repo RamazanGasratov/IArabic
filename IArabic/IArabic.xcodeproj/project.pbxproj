@@ -7,9 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD00720B2B755A0700E14C34 /* StatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD00720A2B755A0700E14C34 /* StatusCode.swift */; };
+		AD00720D2B75754400E14C34 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD00720C2B75754400E14C34 /* Network.swift */; };
+		AD0072102B7575B100E14C34 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = AD00720F2B7575B100E14C34 /* KeychainSwift */; };
 		AD1499652B72954E007DAB97 /* TestScen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1499642B72954E007DAB97 /* TestScen.swift */; };
 		AD47DA7F2B700EF90041C460 /* CardWordsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD47DA7E2B700EF90041C460 /* CardWordsItem.swift */; };
 		AD47DA812B70190C0041C460 /* CardWordsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD47DA802B70190C0041C460 /* CardWordsView.swift */; };
+		AD4A2DE42B766D9300A5B5A7 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4A2DE32B766D9300A5B5A7 /* CoreDataManager.swift */; };
+		AD4A2DE72B76822100A5B5A7 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = AD4A2DE62B76822100A5B5A7 /* SDWebImageSwiftUI */; };
 		AD5753542B52BA3300FA7683 /* IArabicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5753532B52BA3300FA7683 /* IArabicApp.swift */; };
 		AD5753562B52BA3300FA7683 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5753552B52BA3300FA7683 /* ContentView.swift */; };
 		AD5753582B52BA3400FA7683 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD5753572B52BA3400FA7683 /* Assets.xcassets */; };
@@ -44,9 +49,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AD00720A2B755A0700E14C34 /* StatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusCode.swift; sourceTree = "<group>"; };
+		AD00720C2B75754400E14C34 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		AD1499642B72954E007DAB97 /* TestScen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScen.swift; sourceTree = "<group>"; };
 		AD47DA7E2B700EF90041C460 /* CardWordsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardWordsItem.swift; sourceTree = "<group>"; };
 		AD47DA802B70190C0041C460 /* CardWordsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardWordsView.swift; sourceTree = "<group>"; };
+		AD4A2DE32B766D9300A5B5A7 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		AD5753502B52BA3300FA7683 /* IArabic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IArabic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD5753532B52BA3300FA7683 /* IArabicApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IArabicApp.swift; sourceTree = "<group>"; };
 		AD5753552B52BA3300FA7683 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -87,12 +95,47 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD4A2DE72B76822100A5B5A7 /* SDWebImageSwiftUI in Frameworks */,
+				AD0072102B7575B100E14C34 /* KeychainSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AD0072082B75574B00E14C34 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				AD00720C2B75754400E14C34 /* Network.swift */,
+				AD0072092B7559E600E14C34 /* Error */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		AD0072092B7559E600E14C34 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				AD00720A2B755A0700E14C34 /* StatusCode.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		AD4A2DE12B766B2700A5B5A7 /* DataBase */ = {
+			isa = PBXGroup;
+			children = (
+				AD4A2DE22B766D7500A5B5A7 /* CoreDataManager */,
+			);
+			path = DataBase;
+			sourceTree = "<group>";
+		};
+		AD4A2DE22B766D7500A5B5A7 /* CoreDataManager */ = {
+			isa = PBXGroup;
+			children = (
+				AD4A2DE32B766D9300A5B5A7 /* CoreDataManager.swift */,
+			);
+			path = CoreDataManager;
+			sourceTree = "<group>";
+		};
 		AD5753472B52BA3300FA7683 = {
 			isa = PBXGroup;
 			children = (
@@ -112,6 +155,8 @@
 		AD5753522B52BA3300FA7683 /* IArabic */ = {
 			isa = PBXGroup;
 			children = (
+				AD4A2DE12B766B2700A5B5A7 /* DataBase */,
+				AD0072082B75574B00E14C34 /* Network */,
 				AD59A9BF2B73D0BF0061C0E3 /* NewWord */,
 				ADBA06742B70F98F004BCF69 /* Info.plist */,
 				ADBA064D2B70F73B004BCF69 /* Common */,
@@ -271,6 +316,10 @@
 			dependencies = (
 			);
 			name = IArabic;
+			packageProductDependencies = (
+				AD00720F2B7575B100E14C34 /* KeychainSwift */,
+				AD4A2DE62B76822100A5B5A7 /* SDWebImageSwiftUI */,
+			);
 			productName = IArabic;
 			productReference = AD5753502B52BA3300FA7683 /* IArabic.app */;
 			productType = "com.apple.product-type.application";
@@ -299,6 +348,10 @@
 				Base,
 			);
 			mainGroup = AD5753472B52BA3300FA7683;
+			packageReferences = (
+				AD00720E2B7575B100E14C34 /* XCRemoteSwiftPackageReference "keychain-swift" */,
+				AD4A2DE52B76822100A5B5A7 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+			);
 			productRefGroup = AD5753512B52BA3300FA7683 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -345,7 +398,9 @@
 			files = (
 				AD57535D2B52BA3400FA7683 /* Persistence.swift in Sources */,
 				AD1499652B72954E007DAB97 /* TestScen.swift in Sources */,
+				AD00720D2B75754400E14C34 /* Network.swift in Sources */,
 				ADB892542B5BD24D0001C18C /* CardWordsModel.swift in Sources */,
+				AD4A2DE42B766D9300A5B5A7 /* CoreDataManager.swift in Sources */,
 				AD59A9C22B73D0DB0061C0E3 /* NewWordView.swift in Sources */,
 				AD47DA812B70190C0041C460 /* CardWordsView.swift in Sources */,
 				ADA7950B2B52C347003B14A9 /* Tab.swift in Sources */,
@@ -354,6 +409,7 @@
 				AD5753542B52BA3300FA7683 /* IArabicApp.swift in Sources */,
 				AD5753602B52BA3400FA7683 /* IArabic.xcdatamodeld in Sources */,
 				ADBA06762B70FA25004BCF69 /* Ext+Color.swift in Sources */,
+				AD00720B2B755A0700E14C34 /* StatusCode.swift in Sources */,
 				AD47DA7F2B700EF90041C460 /* CardWordsItem.swift in Sources */,
 				ADA795072B52C269003B14A9 /* CustomTabBar.swift in Sources */,
 				ADA795042B52C044003B14A9 /* CardsWordsRow.swift in Sources */,
@@ -564,6 +620,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AD00720E2B7575B100E14C34 /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 21.0.0;
+			};
+		};
+		AD4A2DE52B76822100A5B5A7 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AD00720F2B7575B100E14C34 /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AD00720E2B7575B100E14C34 /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
+		};
+		AD4A2DE62B76822100A5B5A7 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AD4A2DE52B76822100A5B5A7 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		AD57535E2B52BA3400FA7683 /* IArabic.xcdatamodeld */ = {

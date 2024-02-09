@@ -11,12 +11,14 @@ struct CardWordsView: View {
     @State private var isToggleOn = false
     @State private var isDestinationNewWord = false
     
+    @StateObject var vmCoreData = CoreDataViewModel()
+    
     var body: some View {
         NavigationView {
             VStack(spacing: -12) {
                 showAssociation
                 
-                CardsWordsRow2()
+                CardsWordsRow2(dataWords: vmCoreData)
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(Text("Все слова"))

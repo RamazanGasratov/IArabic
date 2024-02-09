@@ -17,7 +17,7 @@ struct IArabicApp: App {
             UINavigationBar.appearance().scrollEdgeAppearance = appearance
         }
     
-    let persistenceController = PersistenceController.shared
+//    let persistenceController = PersistenceController.shared
 
     var body: some Scene {
         WindowGroup {
