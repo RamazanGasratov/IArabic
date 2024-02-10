@@ -218,11 +218,6 @@ extension Network {
 }
 
 
-struct YandexKey{
-    static var key: String {return "y0_AgAAAABcJ33zAATuwQAAAADfr_fGlFrCxQFgSy6nttw6LnJO_IATfs0"}
-}
-
-
 
 
 extension Network {
@@ -232,7 +227,7 @@ extension Network {
         let targetLanguageCode: String?
         
         init(texts: [String]? = nil, targetLanguageCode: String? = nil) {
-            self.folderId = "b1gmr2bqsfmgojsvvrk4"
+            self.folderId = YandexKey.folderID
             self.texts = texts
             self.targetLanguageCode = targetLanguageCode
         }

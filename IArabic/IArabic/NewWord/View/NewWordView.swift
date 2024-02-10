@@ -7,29 +7,6 @@
 
 import SwiftUI
 
-final class NewWordViewModel: ObservableObject {
-    @Published var arabWord: String = ""
-    
-    @StateObject var vmCoreData = CoreDataViewModel()
-    
-    func translate(text: String, prefix: String) {
-        
-        Network.shared.translate(text: text, prefix: prefix) {[weak self] translate, error in
-            guard let self = self, let translate = translate else {
-                print(error)
-                return
-            }
-            DispatchQueue.main.async {
-                self.arabWord = translate
-            }
-            
-        }
-        
-    }
-    
-}
-
-
 struct NewWordView: View {
     @State private var russianWord: String = ""
     @State private var showMainSheet = false
@@ -37,136 +14,78 @@ struct NewWordView: View {
     @State private var imageMain = UIImage()
     @State private var associateImage = UIImage()
     
-    @ObservedObject var vm = NewWordViewModel()
-    @StateObject var vmCoreData = CoreDataViewModel()
+    @State private var showAlert = false
+    @State private var alertTitle = ""
+    @State private var alertDescription = ""
     
+    @StateObject var vm = NewWordViewModel()
+    @StateObject var vmCoreData = CoreDataViewModel()
+
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-      
-            VStack(spacing: 25) {
-                HStack(spacing: 5) {
-                    mainView
+        ScrollView {
+            ZStack {
+                VStack(spacing: 25) {
+                    HStack(spacing: 5) {
+                        CustomAddView(image: $imageMain, showSheet: $showMainSheet, title: "Основная", description: "Основная картинка \n слова")
+                        
+                        Spacer()
+                        
+                        CustomAddView(image: $associateImage, showSheet: $showAssSheet, title: "Ассоциация", description: "Картинка похожая на \n звучание слова")
+                    }
+                    .padding(.horizontal, 15)
+                    .padding(.top, 25)
+                
+                    translateView
                     
                     Spacer()
-                    
-                    associationView
                 }
-                .padding(.horizontal, 15)
-                .padding(.top, 25)
                 
-                
-                translateView
-                
-                Spacer()
+                if showAlert == true {
+                    CustomAlertError(title: alertTitle, description: alertDescription, isOn: $showAlert)
+                }
             }
+        }
             .sheet(isPresented: $showMainSheet) {
-                           // Pick an image from the photo library:
                        ImagePicker(sourceType: .photoLibrary, selectedImage: self.$imageMain)
-
-                           //  If you wish to take a photo from camera instead:
-                           // ImagePicker(sourceType: .camera, selectedImage: self.$image)
                    }
         
             .sheet(isPresented: $showAssSheet) {
-                           // Pick an image from the photo library:
                        ImagePicker(sourceType: .photoLibrary, selectedImage: self.$associateImage)
-
-                           //  If you wish to take a photo from camera instead:
-                           // ImagePicker(sourceType: .camera, selectedImage: self.$image)
                    }
             .applyBG()
+        
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .navigationTitle("Новое слово")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        guard  let imageMain = imageMain.pngData() ,
-                               let imageAss = associateImage.pngData()
-                        else {return}
-                        
-                        vmCoreData.addNewWord(title: russianWord, translateText: vm.arabWord, imageMain: imageMain, associatImage: imageAss)
-                        dismiss()
-                    } label: {
-                       Text("Сохранить")
-                            .font(.montserrat(.regular, size: 17))
-                            .foregroundColor(Color.custom.yellow)
+                    ToolbarItemGroup(placement: .navigationBarLeading) {
+                        cancelButton
                     }
-                }
-                
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {} label: {
-                       Text("Отменить")
-                            .font(.montserrat(.regular, size: 17))
-                            .foregroundColor(Color.custom.yellow)
+                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+                        saveButton
                     }
-                }
             }
-        
     }
-
-    private var mainView: some View {
+    
+    private var cancelButton: some View {
         Button {
-            showMainSheet = true
+            dismiss()
         } label: {
-            VStack(spacing: 19) {
-                Image(systemName: "plus")
-                    .font(.system(size: 25))
-                    .foregroundColor(Color.custom.yellow)
-                    .padding(20)
-                    .background(
-                        Circle()
-                            .fill(Color.custom.lightYellow)
-                    )
-                
-                VStack(spacing: 13) {
-                    Text("Основная")
-                        .foregroundColor(Color.custom.black)
-                        .font(.montserrat(.bold, size: 16))
-                    
-                    Text("Основная картинка \n слова")
-                        .foregroundColor(Color.custom.lightGray)
-                        .font(.montserrat(.semibold, size: 14))
-                }
-            }
-            .frame(width: 167, height: 192)
-            .background(Color.custom.white)
-            .clipShape(
-            RoundedRectangle(cornerRadius: 20)
-            )
+            Text("Отменить")
+                .foregroundColor(Color.custom.yellow)
+                .font(.montserrat(.regular, size: 17))
         }
     }
     
-    private var associationView: some View {
+    private var saveButton: some View {
         Button {
-            showAssSheet = true
+            saveWord()
         } label: {
-            VStack(spacing: 19) {
-                Image(systemName: "plus")
-                    .font(.system(size: 25))
-                    .foregroundColor(Color.custom.yellow)
-                    .padding(20)
-                    .background(
-                        Circle()
-                            .fill(Color.custom.lightYellow)
-                    )
-                
-                VStack(spacing: 13) {
-                    Text("Ассоциация")
-                        .foregroundColor(Color.custom.black)
-                        .font(.montserrat(.bold, size: 16))
-                    
-                    Text("Картинка похожая на \n звучание слова")
-                        .foregroundColor(Color.custom.lightGray)
-                        .font(.montserrat(.semibold, size: 14))
-                }
-            }
-            .frame(width: 167, height: 192)
-            .background(Color.custom.white)
-            .clipShape(
-            RoundedRectangle(cornerRadius: 20)
-            )
+            Text("Сохранить")
+                .foregroundColor(Color.custom.yellow)
+                .font(.montserrat(.regular, size: 17))
         }
     }
     
@@ -192,15 +111,7 @@ struct NewWordView: View {
     private var russianLanguageView: some View {
         VStack(alignment: .leading) {
             HStack {
-                VStack(alignment: .leading) {
-                    Text("Слово")
-                        .foregroundColor(Color.custom.black)
-                        .font(.montserrat(.bold, size: 18))
-                    
-                    Text("на русском языке")
-                        .foregroundColor(Color.custom.black)
-                        .font(.montserrat(.semibold, size: 13))
-                }
+                CustomWordAndDetailView(text: "Слово", description: "на русском языке")
                 
                 Spacer()
                 
@@ -219,25 +130,20 @@ struct NewWordView: View {
                     .font(.montserrat(.regular, size: 17))
             })
             .padding(.top, 20)
+            
             Divider()
         }
     }
     
     private var translateArabicView: some View {
         VStack(alignment: .leading) {
-            Text("Перевод")
-                .foregroundColor(Color.custom.black)
-                .font(.montserrat(.bold, size: 18))
+            CustomWordAndDetailView(text: "Перевод", description: "на арабском языке")
+        
+            Text(vm.arabWord)
+                    .font(.montserrat(.regular, size: 25))
             
-            Text("на арабском языке")
-                .foregroundColor(Color.custom.black)
-                .font(.montserrat(.semibold, size: 13))
-            
-//            TextField(text: $russianWord, label: {
-                Text("Текст: \(vm.arabWord)")
-                    .font(.montserrat(.regular, size: 17))
-//            })
             .padding(.top, 20)
+            
             Divider()
         }
     }
@@ -250,7 +156,9 @@ struct NewWordView: View {
             
             Spacer()
             
-            Button {} label: {
+            Button {
+        
+            } label: {
                 Image(systemName: "play.fill")
                     .foregroundColor(Color.custom.yellow)
                     .padding(12)
@@ -260,53 +168,74 @@ struct NewWordView: View {
         }
     }
 
+    private func saveWord() {
+        // Проверка, что все поля и изображения заполнены
+        if russianWord.isEmpty || vm.arabWord.isEmpty || imageMain.pngData() == nil || associateImage.pngData() == nil {
+            // Обновляем состояния для показа алерта с сообщением об ошибке
+            alertTitle = "Ошибка"
+            alertDescription = "Так нельзя ! Заполни все поля, пожалуйста."
+            showAlert = true
+            return
+        }
+        
+        // Если все в порядке, продолжаем процесс сохранения
+        guard let imageMainData = imageMain.pngData(), let imageAssociateData = associateImage.pngData() else { return }
+        
+        vmCoreData.addNewWord(title: russianWord, translateText: vm.arabWord, imageMain: imageMainData, associatImage: imageAssociateData)
+        dismiss()
+    }
 }
 
 #Preview {
-    NewWordView()
+    CustomAlertError(title: "Ошибка", description: "Ошиаолоааовлаол аовоатаотва", isOn: .constant(true))
 }
 
-
-
-struct ImagePicker: UIViewControllerRepresentable {
-    @Environment(\.presentationMode) private var presentationMode
-    var sourceType: UIImagePickerController.SourceType = .photoLibrary
-    @Binding var selectedImage: UIImage
-
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
-
-        let imagePicker = UIImagePickerController()
-        imagePicker.allowsEditing = false
-        imagePicker.sourceType = sourceType
-        imagePicker.delegate = context.coordinator
-
-        return imagePicker
-    }
-
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>) {
-
-    }
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
-    final class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
-        var parent: ImagePicker
-
-        init(_ parent: ImagePicker) {
-            self.parent = parent
-        }
-
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-
-            if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                parent.selectedImage = image
+struct CustomAlertError: View {
+    var title: String
+    var description: String
+    @Binding var isOn: Bool
+    
+    var body: some View {
+        
+        ZStack {
+            
+            HStack(spacing: 15) {
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(title)
+                        .foregroundColor(Color.white)
+                        .font(.montserrat(.bold, size: 22))
+                    
+                    Text(description)
+                        .foregroundColor(Color.white)
+                        .font(.montserrat(.regular, size: 15))
+                    }
+                
+                Button {
+                    isOn = false
+                } label: {
+                    ZStack {
+                        Circle()
+                            .frame(width: 60, height: 60)
+                            .foregroundColor(Color.custom.lightYellow)
+                        
+                        Circle()
+                            .frame(width: 45, height: 45)
+                            .foregroundColor(Color.custom.white)
+                        
+                        Text("Ок")
+                            .font(.montserrat(.regular, size: 16))
+                            .foregroundColor(Color.custom.yellow)
+                    }
+                }
+                
             }
-
-            parent.presentationMode.wrappedValue.dismiss()
+            .padding(.horizontal, 26)
+            .padding(.vertical, 22)
         }
-
+        .frame(width: 316, height: 188)
+        .background(Color.custom.yellow)
+        .cornerRadius(20)
+        .shadow(color: .black.opacity(0.6), radius: 50, x: 1, y: 1)
     }
 }
+
