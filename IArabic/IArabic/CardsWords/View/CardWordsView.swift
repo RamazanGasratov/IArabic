@@ -18,7 +18,7 @@ struct CardWordsView: View {
             VStack(spacing: -12) {
                 showAssociation
                 
-                CardsWordsRow2(dataWords: vmCoreData)
+                CardWordsRow(vmCoreData: vmCoreData)
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(Text("Все слова"))
