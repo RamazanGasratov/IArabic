@@ -15,11 +15,11 @@ struct CardWordsRow: View {
     
     var body: some View {
         VStack(spacing: 15) {
-            SnapCarousel(index: $currentIndex, items: vmCoreData.saveEntities) { word in
+            SnapCarousel(index: $currentIndex, items: vmCoreData.saveEntities.reversed()) { word in
                 
                 GeometryReader { proxy in
                     let size = proxy.size
-                    
+        
                     CardWordsItem(textTitle: word.title, textTranslate: word.translate, imageMain: word.imageMain, imageAssociate: word.associatImage)
                         .frame(width: size.width)
                         .cornerRadius(20)

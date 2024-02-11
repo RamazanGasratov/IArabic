@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct CardWordsView: View {
     @State private var isToggleOn = false
     @State private var isDestinationNewWord = false
     
-    @StateObject var vmCoreData = CoreDataViewModel()
+    @EnvironmentObject var vmCoreData: CoreDataViewModel
     
     var body: some View {
         NavigationView {
@@ -20,13 +21,15 @@ struct CardWordsView: View {
                 
                 CardWordsRow(vmCoreData: vmCoreData)
             }
+            .onAppear {
+                vmCoreData.featchCardWords()
+            }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(Text("Все слова"))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink {
-                        NewWordView()
-                            .applyBG()
+                    Button {
+                        isDestinationNewWord = true
                     } label: {
                         Image(systemName: "plus")
                             .foregroundColor(Color.custom.yellow)
@@ -35,6 +38,8 @@ struct CardWordsView: View {
                 }
             }
             .background(Color.custom.backgroundColor)
+            .fullScreenCover(isPresented: $isDestinationNewWord, content: {
+                NewWordView().environmentObject(vmCoreData)            })
         }
     }
     

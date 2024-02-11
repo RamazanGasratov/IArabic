@@ -24,13 +24,13 @@ class CoreDataViewModel: ObservableObject {
     }
     
     func featchCardWords() {
-        let request = NSFetchRequest<Words>(entityName: "Words")
-        
-        do {
-            saveEntities = try container.viewContext.fetch(request)
-        } catch let error {
-            print("Error featching. \(error)")
-        }
+            let request = NSFetchRequest<Words>(entityName: "Words")
+            
+            do {
+                self.saveEntities = try self.container.viewContext.fetch(request)
+            } catch let error {
+                print("Error featching. \(error)")
+            }
     }
     
     func addNewWord(title: String, translateText: String, imageMain: Data, associatImage: Data) {

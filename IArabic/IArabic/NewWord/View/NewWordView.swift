@@ -19,54 +19,57 @@ struct NewWordView: View {
     @State private var alertDescription = ""
     
     @StateObject var vm = NewWordViewModel()
-    @StateObject var vmCoreData = CoreDataViewModel()
+    
+    @EnvironmentObject var vmCoreData: CoreDataViewModel
 
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        ScrollView {
-            ZStack {
-                VStack(spacing: 25) {
-                    HStack(spacing: 5) {
-                        CustomAddView(image: $imageMain, showSheet: $showMainSheet, title: "Основная", description: "Основная картинка \n слова")
+        NavigationView {
+            ScrollView {
+                ZStack {
+                    VStack(spacing: 25) {
+                        HStack(spacing: 5) {
+                            CustomAddView(image: $imageMain, showSheet: $showMainSheet, title: "Основная", description: "Основная картинка \n слова")
+                            
+                            Spacer()
+                            
+                            CustomAddView(image: $associateImage, showSheet: $showAssSheet, title: "Ассоциация", description: "Картинка похожая на \n звучание слова")
+                        }
+                        .padding(.horizontal, 15)
+                        .padding(.top, 25)
+                    
+                        translateView
                         
                         Spacer()
-                        
-                        CustomAddView(image: $associateImage, showSheet: $showAssSheet, title: "Ассоциация", description: "Картинка похожая на \n звучание слова")
                     }
-                    .padding(.horizontal, 15)
-                    .padding(.top, 25)
-                
-                    translateView
                     
-                    Spacer()
+                    if showAlert == true {
+                        CustomAlertError(title: alertTitle, description: alertDescription, isOn: $showAlert)
+                    }
                 }
-                
-                if showAlert == true {
-                    CustomAlertError(title: alertTitle, description: alertDescription, isOn: $showAlert)
-                }
+            }
+                .sheet(isPresented: $showMainSheet) {
+                           ImagePicker(sourceType: .photoLibrary, selectedImage: self.$imageMain)
+                       }
+            
+                .sheet(isPresented: $showAssSheet) {
+                           ImagePicker(sourceType: .photoLibrary, selectedImage: self.$associateImage)
+                       }
+                .applyBG()
+            
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarBackButtonHidden(true)
+                .navigationTitle("Новое слово")
+                .toolbar {
+                        ToolbarItemGroup(placement: .navigationBarLeading) {
+                            cancelButton
+                        }
+                        ToolbarItemGroup(placement: .navigationBarTrailing) {
+                            saveButton
+                        }
             }
         }
-            .sheet(isPresented: $showMainSheet) {
-                       ImagePicker(sourceType: .photoLibrary, selectedImage: self.$imageMain)
-                   }
-        
-            .sheet(isPresented: $showAssSheet) {
-                       ImagePicker(sourceType: .photoLibrary, selectedImage: self.$associateImage)
-                   }
-            .applyBG()
-        
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
-            .navigationTitle("Новое слово")
-            .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarLeading) {
-                        cancelButton
-                    }
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        saveButton
-                    }
-            }
     }
     
     private var cancelButton: some View {
@@ -182,6 +185,7 @@ struct NewWordView: View {
         guard let imageMainData = imageMain.pngData(), let imageAssociateData = associateImage.pngData() else { return }
         
         vmCoreData.addNewWord(title: russianWord, translateText: vm.arabWord, imageMain: imageMainData, associatImage: imageAssociateData)
+        
         dismiss()
     }
 }
