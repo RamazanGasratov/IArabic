@@ -14,6 +14,9 @@ struct CardWordsItem: View {
     var imageMain: Data?
     var imageAssociate: Data?
     
+    @State private var uiImageMain: UIImage? = nil
+    @State private var uiImageAssociate: UIImage? = nil
+    
     var body: some View {
         ZStack(alignment: .top) {
             
@@ -39,6 +42,14 @@ struct CardWordsItem: View {
         }
         
         .background(Color.custom.backgroundColor)
+        .onAppear {
+            loadImageAsynchronously(imageData: imageMain) { image in
+                self.uiImageMain = image
+            }
+            loadImageAsynchronously(imageData: imageAssociate) { image in
+                self.uiImageAssociate = image
+            }
+        }
     }
     
     private var audioView: some View {
@@ -66,15 +77,26 @@ struct CardWordsItem: View {
     
     private var imagesCardWords: some View {
         VStack {
-            Image(uiImage: UIImage(data: imageMain ?? Data()) ?? UIImage(named: "дочь") ?? UIImage()) // -  основная фотка 
-                .resizable()
-                .frame(width: 300, height: 208)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+            if let uiImageMain = uiImageMain {
+                Image(uiImage: uiImageMain) // -  основная фотка
+                    .resizable()
+                    .frame(width: 300, height: 208)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            }
             
-            Image(uiImage: UIImage(data: imageAssociate ?? Data()) ?? UIImage(named: "дочь") ?? UIImage()) // -  ассоциация
-                .resizable()
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .frame(width: 280, height: 183)
+            if let uiImageAssociate = uiImageAssociate {
+                Image(uiImage: uiImageAssociate) // -  ассоциация
+                    .resizable()
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .frame(width: 280, height: 183)
+            }
+        }
+    }
+    
+    private func loadImageAsynchronously(imageData: Data?, completion: @escaping (UIImage?) -> Void) {
+        let image: UIImage? = imageData.flatMap { UIImage(data: $0) }
+        DispatchQueue.main.async {
+            completion(image)
         }
     }
 }

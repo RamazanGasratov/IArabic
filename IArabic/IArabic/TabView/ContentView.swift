@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
+    
     //MARK: Hiding Native One
     init() {
         UITabBar.appearance().isHidden = true
@@ -25,11 +26,13 @@ struct ContentView: View {
             VStack {
                 switch Tab.allCases[selectedTab] {
                 case.library:
-                    TestScen()
+                    LibraryView()
+                        .environmentObject(CoreDataViewModel())
                
                 case.wordCards:
                     CardWordsView()
-                   
+                        .environmentObject(CoreDataViewModel())
+                    
                 case.dictionary:
                     TestScen()
                     
