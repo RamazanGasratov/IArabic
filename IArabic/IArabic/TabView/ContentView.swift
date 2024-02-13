@@ -34,7 +34,7 @@ struct ContentView: View {
                         .environmentObject(CoreDataViewModel())
                     
                 case.dictionary:
-                    TestScen()
+                    DictionaryView()
                     
                 }
             }
