@@ -4,146 +4,142 @@
   {
     "id": 1,
     "rusText": "Из, от",
-    "arText": "مِن"
+    "arText": "مِنْ"
   },
   {
     "id": 2,
     "rusText": "Бог",
-    "arText": "ٱلله"
+    "arText": "اللَّهُ"
   },
   {
     "id": 3,
+    "rusText": "Нет",
+    "arText": "لَا"
+  },
+  {
+    "id": 4,
     "rusText": "В",
     "arText": "فِي"
   },
   {
-    "id": 4,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
-  },
-  {
     "id": 5,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Истинно, действительно",
+    "arText": "إِنَّ"
   },
   {
     "id": 6,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Сказали",
+    "arText": "قَالَ"
+  },
+  {
+    "id": 7,
+    "rusText": "Который",
+    "arText": "الَّذِي"
   },
   {
     "id": 8,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "На, над",
+    "arText": "عَلَى"
   },
   {
-      "id": 9,
-      "rusText": "Имя 2",
-      "arText": "Описание 2"
-    },
+    "id": 9,
+    "rusText": "Безусловно",
+    "arText": "لَا"
+  },
   {
     "id": 10,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Быть, существовать",
+    "arText": "كَانَ"
   },
   {
     "id": 11,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Что?",
+    "arText": "مَا"
   },
   {
     "id": 12,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Господь",
+    "arText": "رَبُّ"
   },
   {
     "id": 13,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Кто?",
+    "arText": "مَنْ"
   },
   {
     "id": 14,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "В, на",
+    "arText": "بِ"
   },
   {
     "id": 15,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "К, на",
+    "arText": "إِلَى"
   },
   {
     "id": 16,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Если",
+    "arText": "إِنْ"
   },
   {
     "id": 17,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Кроме",
+    "arText": "إِلَّا"
   },
   {
     "id": 18,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Что, чтобы",
+    "arText": "لِ"
   },
   {
     "id": 19,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Уверовать",
+    "arText": "آمَنَ"
   },
   {
     "id": 20,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Тот",
+    "arText": "ذَلِكَ"
   },
   {
     "id": 21,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "От",
+    "arText": "عَنْ"
   },
   {
     "id": 22,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Он",
+    "arText": "هُوَ"
   },
   {
     "id": 23,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Земля",
+    "arText": "أَرْضٌ"
   },
   {
     "id": 24,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Когда, если",
+    "arText": "إِذَا"
   },
   {
     "id": 25,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Уже (перед гл. прош. вр), иногда, вероятно (перед гл. наст.-будущ. вр)",
+    "arText": "قَدْ"
   },
   {
     "id": 26,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "День",
+    "arText": "يَوْمٌ"
   },
   {
     "id": 27,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Народ",
+    "arText": "قَوْمٌ"
   },
   {
     "id": 28,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
+    "rusText": "Знамение",
+    "arText": "آيَةٌ"
   },
-  {
-    "id": 29,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
-  },
-  {
-    "id": 30,
-    "rusText": "Имя 2",
-    "arText": "Описание 2"
-  }
 ]
+
