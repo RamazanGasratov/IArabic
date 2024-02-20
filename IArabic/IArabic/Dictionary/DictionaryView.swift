@@ -47,11 +47,10 @@ struct DictionaryViewItem: View {
                 .font(.montserrat(.boldItalic, size: 30))
                 .padding()
         }
-        
         .background(Color.yellow)
         .clipShape(RoundedRectangle(cornerRadius: 20))
         .padding(.horizontal, 12)
-        
+        .padding(.top, 20)
     }
 }
 
