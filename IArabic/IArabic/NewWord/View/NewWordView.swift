@@ -21,11 +21,12 @@ struct NewWordView: View {
     @StateObject var vm = NewWordViewModel()
     
     @EnvironmentObject var vmCoreData: CoreDataViewModel
+    @EnvironmentObject private var coordinator: Coordinator
 
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        NavigationView {
+     
             ScrollView {
                 ZStack {
                     VStack(spacing: 25) {
@@ -69,12 +70,12 @@ struct NewWordView: View {
                             saveButton
                         }
             }
-        }
+        
     }
     
     private var cancelButton: some View {
         Button {
-            dismiss()
+            coordinator.dismissFullScreenCover()
         } label: {
             Text("Отменить")
                 .foregroundColor(Color.custom.yellow)

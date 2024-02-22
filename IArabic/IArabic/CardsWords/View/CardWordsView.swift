@@ -13,6 +13,7 @@ struct CardWordsView: View {
     @State private var isDestinationNewWord = false
     
     @EnvironmentObject var vmCoreData: CoreDataViewModel
+    @EnvironmentObject private var coordinator: Coordinator
     
     var body: some View {
         NavigationView {
@@ -29,7 +30,7 @@ struct CardWordsView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        isDestinationNewWord = true
+                        coordinator.present(fullScreenCover: .newWord)
                     } label: {
                         Image(systemName: "plus")
                             .foregroundColor(Color.custom.yellow)

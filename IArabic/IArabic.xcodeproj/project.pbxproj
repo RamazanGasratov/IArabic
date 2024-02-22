@@ -13,6 +13,7 @@
 		AD1499652B72954E007DAB97 /* TestScen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1499642B72954E007DAB97 /* TestScen.swift */; };
 		AD1B4ABC2B7A6CB3007563A2 /* DictionaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B4ABB2B7A6CB3007563A2 /* DictionaryView.swift */; };
 		AD1B4ABE2B7A7790007563A2 /* Dictionary.json in Resources */ = {isa = PBXBuildFile; fileRef = AD1B4ABD2B7A7790007563A2 /* Dictionary.json */; };
+		AD20F93C2B8660C70016E0E1 /* Coordinator .swift in Sources */ = {isa = PBXBuildFile; fileRef = AD20F93B2B8660C70016E0E1 /* Coordinator .swift */; };
 		AD47DA7F2B700EF90041C460 /* CardWordsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD47DA7E2B700EF90041C460 /* CardWordsItem.swift */; };
 		AD47DA812B70190C0041C460 /* CardWordsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD47DA802B70190C0041C460 /* CardWordsView.swift */; };
 		AD4A2DE42B766D9300A5B5A7 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4A2DE32B766D9300A5B5A7 /* CoreDataManager.swift */; };
@@ -61,6 +62,7 @@
 		AD1499642B72954E007DAB97 /* TestScen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScen.swift; sourceTree = "<group>"; };
 		AD1B4ABB2B7A6CB3007563A2 /* DictionaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryView.swift; sourceTree = "<group>"; };
 		AD1B4ABD2B7A7790007563A2 /* Dictionary.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Dictionary.json; sourceTree = "<group>"; };
+		AD20F93B2B8660C70016E0E1 /* Coordinator .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinator .swift"; sourceTree = "<group>"; };
 		AD47DA7E2B700EF90041C460 /* CardWordsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardWordsItem.swift; sourceTree = "<group>"; };
 		AD47DA802B70190C0041C460 /* CardWordsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardWordsView.swift; sourceTree = "<group>"; };
 		AD4A2DE32B766D9300A5B5A7 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -142,6 +144,14 @@
 			path = Dictionary;
 			sourceTree = "<group>";
 		};
+		AD20F93A2B8660930016E0E1 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				AD20F93B2B8660C70016E0E1 /* Coordinator .swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		AD4A2DE12B766B2700A5B5A7 /* DataBase */ = {
 			isa = PBXGroup;
 			children = (
@@ -186,6 +196,7 @@
 		AD5753522B52BA3300FA7683 /* IArabic */ = {
 			isa = PBXGroup;
 			children = (
+				AD20F93A2B8660930016E0E1 /* Coordinator */,
 				ADB0FC272B78189C001153DA /* Keys */,
 				AD4A2DE12B766B2700A5B5A7 /* DataBase */,
 				AD0072082B75574B00E14C34 /* Network */,
@@ -483,6 +494,7 @@
 				ADB0FC292B7818AC001153DA /* Keys.swift in Sources */,
 				ADED58D42B78EB580085EDD3 /* LibraryView .swift in Sources */,
 				AD5753602B52BA3400FA7683 /* IArabic.xcdatamodeld in Sources */,
+				AD20F93C2B8660C70016E0E1 /* Coordinator .swift in Sources */,
 				AD1B4ABC2B7A6CB3007563A2 /* DictionaryView.swift in Sources */,
 				ADBA06762B70FA25004BCF69 /* Ext+Color.swift in Sources */,
 				AD00720B2B755A0700E14C34 /* StatusCode.swift in Sources */,

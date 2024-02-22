@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct IArabicApp: App {
+ 
+    
     init() {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()

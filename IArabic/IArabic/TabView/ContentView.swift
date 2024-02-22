@@ -10,44 +10,37 @@ import CoreData
 
 struct ContentView: View {
     
-    //MARK: Hiding Native One
-    init() {
-        UITabBar.appearance().isHidden = true
-    }
+    @StateObject private var coordinator = Coordinator()
     
-    @State private var selectedTab: Int = 1
+    @State var selectedTab = 1
     
-    @State var currentTab: Tab = .wordCards
-
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
-            
-            VStack {
-                switch Tab.allCases[selectedTab] {
-                case.library:
-                    LibraryView()
-                        .environmentObject(CoreDataViewModel())
-               
-                case.wordCards:
-                    CardWordsView()
-                        .environmentObject(CoreDataViewModel())
-                    
-                case.dictionary:
-                    DictionaryView()
-                    
+        TabView(selection: $selectedTab) {
+            LibraryView().environmentObject(CoreDataViewModel())
+                .tabItem {
+                    Image(systemName: "building.columns")
                 }
-            }
+                .tag(0)
             
-            Spacer()
+                coordinator.build(page: .cardWords)
+                  
+                    .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in
+                        coordinator.build(fullScreenCover: fullScreenCover)
+                    }
+                    .tabItem {
+                        Image(systemName: "menucard")
+                    }
+                    .tag(1)
             
-            CustomTabs(selectedIndex: $selectedTab, tabs: Tab.allCases)
-                .background(Color.custom.white)
-                .border(Color.custom.lightGray, width: 0.3)
+                
+            DictionaryView()
+                .tabItem {
+                    Image(systemName: "character.book.closed")
+                }
+                .tag(2)
         }
-        .background(Color.custom.backgroundColor).ignoresSafeArea()
+        .environmentObject(coordinator)
     }
-
 }
 
 
