@@ -25,7 +25,6 @@ struct CardWordsRow: View {
                         .cornerRadius(20)
                 }
             }
-            .padding(.vertical, 25)
         }
         .frame(maxHeight: .infinity, alignment: .top)
     }

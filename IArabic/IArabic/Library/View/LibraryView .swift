@@ -8,17 +8,9 @@
 import SwiftUI
 
 struct LibraryView: View {
-    let items = [
-            ("House", "Дом", "house.jpg"),
-            ("Winter4", "Зима", "winter.jpg"),
-            ("Winter2", "Зима3", "winter.jpg"),
-            ("Winter1", "Зим1", "winter.jpg"),
-            ("Winter1434834", "Зим1", "winter.jpg"),
-            // ... Добавьте остальные элементы в этот массив
-        ]
-    
     @State private var presenNewWords: Bool = false
     @EnvironmentObject var vmCoreData: CoreDataViewModel
+    @EnvironmentObject private var coordinator: Coordinator
     
     var body: some View {
         VStack {
@@ -35,7 +27,7 @@ struct LibraryView: View {
             ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
                         Button(action: {
-                            presenNewWords = true
+                            self.coordinator.present(fullScreenCover: .newWord)
                                         }) {
                                             VStack(spacing: 10) {
                                                 Image(systemName: "plus") //

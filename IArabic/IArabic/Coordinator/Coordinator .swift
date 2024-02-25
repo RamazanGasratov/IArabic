@@ -7,8 +7,9 @@
 import SwiftUI
 
 enum Page: String, Identifiable {
-    case newWord
-    case cardWords
+    case library
+    case wordCards
+    case dictionary
     
     var id: String {
         self.rawValue
@@ -27,8 +28,6 @@ final class Coordinator: ObservableObject {
     
     @Published var path = NavigationPath()
     @Published var fullScreenCover: FullScreenCover?
-    
-    @StateObject private var coordinator = Coordinator()
     
     // Переход на экрана
     func push(_ page: Page) {
@@ -51,11 +50,14 @@ final class Coordinator: ObservableObject {
     @ViewBuilder
     func build(page: Page) -> some View {
         switch page {
-        case .newWord:
-            NewWordView()
-        case .cardWords:
+        case .library :
+            LibraryView()
+      
+        case .wordCards :
             CardWordsView()
-                .environmentObject(CoreDataViewModel())
+            
+        case .dictionary :
+            DictionaryView()
         }
     }
     
@@ -65,6 +67,7 @@ final class Coordinator: ObservableObject {
         case .newWord:
             NavigationStack {
                 NewWordView()
+                    .environmentObject(CoreDataViewModel())
             }
         }
     }

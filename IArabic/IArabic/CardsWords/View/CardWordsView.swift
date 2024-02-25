@@ -16,32 +16,40 @@ struct CardWordsView: View {
     @EnvironmentObject private var coordinator: Coordinator
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: -12) {
+            VStack() {
+                navigationView
+                
                 showAssociation
+                    .padding(.horizontal, 12)
+                    .padding(.top, 5)
+                
+                Spacer()
                 
                 CardWordsRow(vmCoreData: vmCoreData)
             }
             .onAppear {
                 vmCoreData.featchCardWords()
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(Text("Все слова"))
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        coordinator.present(fullScreenCover: .newWord)
-                    } label: {
-                        Image(systemName: "plus")
-                            .foregroundColor(Color.custom.yellow)
-                    }
-                    .font(.system(size: 20))
-                }
-            }
             .background(Color.custom.backgroundColor)
-            .fullScreenCover(isPresented: $isDestinationNewWord, content: {
-                NewWordView().environmentObject(vmCoreData)            })
+    }
+    
+    private var navigationView: some View {
+        HStack {
+            Text("Карточки")
+                .font(.montserrat(.bold, size: 28))
+            
+            Spacer()
+            
+            Button {
+                coordinator.present(fullScreenCover: .newWord)
+            } label: {
+                Image(systemName: "plus")
+                    .foregroundColor(Color.custom.yellow)
+            }
+            .font(.system(size: 25))
         }
+        .padding()
+        .background(Color.custom.white)
     }
     
     private var showAssociation: some View {
@@ -58,7 +66,6 @@ struct CardWordsView: View {
         .frame(height: 54)
         .background(Color.white)
         .cornerRadius(20)
-        .padding()
     }
 }
 

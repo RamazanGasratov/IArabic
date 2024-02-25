@@ -9,40 +9,50 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    
     @StateObject private var coordinator = Coordinator()
-    
-    @State var selectedTab = 1
+    @StateObject private var coreDataViewModel = CoreDataViewModel()
+    @State var selectedTab: Tab = .wordCards
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            LibraryView().environmentObject(CoreDataViewModel())
-                .tabItem {
-                    Image(systemName: "building.columns")
-                }
-                .tag(0)
-            
-                coordinator.build(page: .cardWords)
-                  
-                    .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in
-                        coordinator.build(fullScreenCover: fullScreenCover)
-                    }
-                    .tabItem {
-                        Image(systemName: "menucard")
-                    }
-                    .tag(1)
-            
+            ForEach(Tab.allCases, id: \.self) { tab in
                 
-            DictionaryView()
-                .tabItem {
-                    Image(systemName: "character.book.closed")
+                switch tab {
+                case .library:
+                    coordinator.build(page: .library)
+                        .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in
+                            coordinator.build(fullScreenCover: fullScreenCover)
+                        }
+                        .tabItem {
+                            tab.image
+                           Text(tab.text)
+                        }
+                        .tag(tab.index)
+                case .wordCards:
+                    coordinator.build(page: .wordCards)
+                        .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in
+                            coordinator.build(fullScreenCover: fullScreenCover)
+                        }
+                        .tabItem {
+                            tab.image
+                            Text(tab.text)
+                        }
+                        .tag(tab.index)
+                case .dictionary:
+                    coordinator.build(page: .dictionary)
+                        .tabItem {
+                            tab.image
+                            Text(tab.text)
+                        }
+                        .tag(tab.index)
                 }
-                .tag(2)
+            }
         }
+        .tint(Color.custom.yellow)
         .environmentObject(coordinator)
+        .environmentObject(coreDataViewModel)
     }
 }
-
 
 #Preview {
     ContentView()
