@@ -42,6 +42,19 @@ class CoreDataViewModel: ObservableObject {
         saveData()
     }
     
+    func updateWord(word: Words, title: String, translateText: String, imageMain: Data, associatImage: Data) {
+        word.title = title
+        word.translate = translateText
+        word.imageMain = imageMain
+        word.associatImage = associatImage
+        saveData()
+    }
+    
+    func deleteWord(word: Words) {
+        container.viewContext.delete(word)
+        saveData()
+    }
+
     func saveData() {
         do {
             try container.viewContext.save()
