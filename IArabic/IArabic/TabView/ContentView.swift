@@ -20,8 +20,8 @@ struct ContentView: View {
                 switch tab {
                 case .library:
                     coordinator.build(page: .library)
-                        .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in
-                            coordinator.build(fullScreenCover: fullScreenCover)
+                        .sheet(item: $coordinator.sheet) { sheet in
+                            coordinator.build(sheet: sheet)
                         }
                         .tabItem {
                             tab.image
@@ -30,8 +30,8 @@ struct ContentView: View {
                         .tag(tab.index)
                 case .wordCards:
                     coordinator.build(page: .wordCards)
-                        .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in
-                            coordinator.build(fullScreenCover: fullScreenCover)
+                        .sheet(item: $coordinator.sheet) { sheet in
+                            coordinator.build(sheet: sheet)
                         }
                         .tabItem {
                             tab.image

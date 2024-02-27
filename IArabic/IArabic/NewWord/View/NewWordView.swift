@@ -18,6 +18,23 @@ struct NewWordView: View {
     @State private var alertTitle = ""
     @State private var alertDescription = ""
     
+    // Добавляем опциональный параметр для редактируемого слова
+        var editingWord: Words?
+
+        // Инициализатор для установки начальных значений при редактировании
+    init(editingWord: Words? = nil) {
+            if let editingWord = editingWord {
+                _russianWord = State(initialValue: editingWord.title ?? "")
+//                vm.arabWord = editingWord.translate ?? ""
+                if let mainImageData = editingWord.imageMain, let mainImage = UIImage(data: mainImageData) {
+                    _imageMain = State(initialValue: mainImage)
+                }
+                if let associateImageData = editingWord.associatImage, let associateImage = UIImage(data: associateImageData) {
+                    _associateImage = State(initialValue: associateImage)
+                }
+            }
+        }
+    
     @StateObject var vm = NewWordViewModel()
     
     @EnvironmentObject var vmCoreData: CoreDataViewModel
@@ -26,7 +43,7 @@ struct NewWordView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-     
+      
             ScrollView {
                 ZStack {
                     VStack(spacing: 25) {
@@ -39,7 +56,7 @@ struct NewWordView: View {
                         }
                         .padding(.horizontal, 15)
                         .padding(.top, 25)
-                    
+                        
                         translateView
                         
                         Spacer()
@@ -50,32 +67,33 @@ struct NewWordView: View {
                     }
                 }
             }
-                .sheet(isPresented: $showMainSheet) {
-                           ImagePicker(sourceType: .photoLibrary, selectedImage: self.$imageMain)
-                       }
-            
-                .sheet(isPresented: $showAssSheet) {
-                           ImagePicker(sourceType: .photoLibrary, selectedImage: self.$associateImage)
-                       }
-                .applyBG()
-            
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarBackButtonHidden(true)
-                .navigationTitle("Новое слово")
-                .toolbar {
-                        ToolbarItemGroup(placement: .navigationBarLeading) {
-                            cancelButton
-                        }
-                        ToolbarItemGroup(placement: .navigationBarTrailing) {
-                            saveButton
-                        }
+            .sheet(isPresented: $showMainSheet) {
+                ImagePicker(sourceType: .photoLibrary, selectedImage: self.$imageMain)
             }
+            
+            .sheet(isPresented: $showAssSheet) {
+                ImagePicker(sourceType: .photoLibrary, selectedImage: self.$associateImage)
+            }
+            .applyBG()
+            
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
+            .navigationTitle("Новое слово")
+            .toolbar {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    cancelButton
+                }
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    saveButton
+                }
+            }
+        
         
     }
     
     private var cancelButton: some View {
         Button {
-            coordinator.dismissFullScreenCover()
+            coordinator.dismissSheet()
         } label: {
             Text("Отменить")
                 .foregroundColor(Color.custom.yellow)

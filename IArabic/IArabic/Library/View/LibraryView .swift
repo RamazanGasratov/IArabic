@@ -27,7 +27,7 @@ struct LibraryView: View {
             ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
                         Button(action: {
-                            self.coordinator.present(fullScreenCover: .newWord)
+                            self.coordinator.present(sheet: .newWord)
                                         }) {
                                             VStack(spacing: 10) {
                                                 Image(systemName: "plus") //
@@ -54,7 +54,8 @@ struct LibraryView: View {
                         
                         ForEach(vmCoreData.saveEntities, id: \.id) { word in
                             
-                            LibraryItemView(arText: word.translate, rusText: word.title, imageMain: word.imageMain)
+                            LibraryItemView(word: word)
+                                .environmentObject(coordinator)
                                         }
                     }
                     .padding()
@@ -73,34 +74,38 @@ struct LibraryView: View {
 
 
 struct LibraryItemView: View {
-    var arText: String?
-    var rusText: String?
-    var imageMain: Data?
+    var word: Words // Предполагается, что у вас есть такой тип данных
+    @EnvironmentObject private var coordinator: Coordinator
     
     var body: some View {
-        VStack(spacing: 10) {
-            ImageManager.loadImage(from: imageMain)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 85, height: 85)
-                .clipShape(Circle())
-              
-            
-            VStack(spacing: 5) {
-                Text(arText ?? "")
-                    .font(.montserrat(.bold, size: 16))
-                    .lineLimit(1)
-                Text(rusText ?? "")
-                    .font(.montserrat(.regular, size: 12))
-                    .lineLimit(1)
+        Button(action: {
+            coordinator.editWord(word)
+        }) {
+            VStack(spacing: 10) {
+                ImageManager.loadImage(from: word.imageMain)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 85, height: 85)
+                    .clipShape(Circle())
+                
+                VStack(spacing: 5) {
+                    Text(word.translate ?? "")
+                        .font(.montserrat(.bold, size: 16))
+                        .lineLimit(1)
+                    Text(word.title ?? "" )
+                        .font(.montserrat(.regular, size: 12))
+                        .lineLimit(1)
+                }
+                .foregroundColor(Color.custom.black)
+                .padding(.horizontal, 5)
             }
-            .padding(.horizontal, 5)
+            .frame(width: 115, height: 170)
+            .background(Color.white)
+            .cornerRadius(15)
         }
-        .frame(width: 115, height: 170)
-        .background(Color.white)
-        .cornerRadius(15)
     }
 }
+
 
 class ImageManager {
     static func loadImage(from data: Data?) -> Image {

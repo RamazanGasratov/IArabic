@@ -18,6 +18,16 @@ enum Page: String, Identifiable {
 
 enum FullScreenCover: String, Identifiable {
     case newWord
+    case editWord // Для экрана редактирования слова
+    
+    var id: String {
+        self.rawValue
+    }
+}
+
+enum Sheet: String, Identifiable {
+    case newWord
+    case editWord
     
     var id: String {
         self.rawValue
@@ -28,15 +38,25 @@ final class Coordinator: ObservableObject {
     
     @Published var path = NavigationPath()
     @Published var fullScreenCover: FullScreenCover?
+    @Published var sheet: Sheet?
+    @Published var editingWord: Words?
     
     // Переход на экрана
     func push(_ page: Page) {
         path.append(page)
     }
     
+    func present(sheet: Sheet) {
+        self.sheet = sheet
+    }
+    
     // Закрытие экрана и переход на экран родителя
     func pop() {
         path.removeLast()
+    }
+    
+    func dismissSheet() {
+        self.sheet = nil
     }
     
     func present(fullScreenCover: FullScreenCover) {
@@ -46,6 +66,12 @@ final class Coordinator: ObservableObject {
     func dismissFullScreenCover() {
         self.fullScreenCover = nil
     }
+    
+    // Метод для открытия экрана редактирования с передачей данных слова
+       func editWord(_ word: Words) {
+           self.editingWord = word
+           self.sheet = .editWord
+       }
     
     @ViewBuilder
     func build(page: Page) -> some View {
@@ -62,13 +88,41 @@ final class Coordinator: ObservableObject {
     }
     
     @ViewBuilder
-    func build(fullScreenCover: FullScreenCover) -> some View {
-        switch fullScreenCover {
+    func build(sheet: Sheet) -> some View {
+        switch sheet {
         case .newWord:
             NavigationStack {
                 NewWordView()
                     .environmentObject(CoreDataViewModel())
             }
+        case .editWord:
+            NavigationStack {
+                // Проверяем, что у нас есть слово для редактирования
+                if let editingWord = editingWord {
+                    NewWordView(editingWord: editingWord) // Передаем слово во View
+                        .environmentObject(CoreDataViewModel())
+                }
+            }
         }
     }
+    
+    // Изменяем метод build для обработки нового случая
+      @ViewBuilder
+      func build(fullScreenCover: FullScreenCover) -> some View {
+          switch fullScreenCover {
+          case .newWord:
+              NavigationStack {
+                  NewWordView()
+                      .environmentObject(CoreDataViewModel())
+              }
+          case .editWord:
+              NavigationStack {
+                  // Проверяем, что у нас есть слово для редактирования
+                  if let editingWord = editingWord {
+                      NewWordView(editingWord: editingWord) // Передаем слово во View
+                          .environmentObject(CoreDataViewModel())
+                  }
+              }
+          }
+      }
 }
