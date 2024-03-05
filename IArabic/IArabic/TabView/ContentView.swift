@@ -9,7 +9,6 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @StateObject private var coordinator = Coordinator()
     @StateObject private var coreDataViewModel = CoreDataViewModel()
     @State var selectedTab: Tab = .wordCards
     
@@ -19,27 +18,21 @@ struct ContentView: View {
                 
                 switch tab {
                 case .library:
-                    coordinator.build(page: .library)
-                        .sheet(item: $coordinator.sheet) { sheet in
-                            coordinator.build(sheet: sheet)
-                        }
+                    LibraryView()
                         .tabItem {
                             tab.image
                            Text(tab.text)
                         }
                         .tag(tab.index)
                 case .wordCards:
-                    coordinator.build(page: .wordCards)
-                        .sheet(item: $coordinator.sheet) { sheet in
-                            coordinator.build(sheet: sheet)
-                        }
+                    CardWordsView()
                         .tabItem {
                             tab.image
                             Text(tab.text)
                         }
                         .tag(tab.index)
                 case .dictionary:
-                    coordinator.build(page: .dictionary)
+                    DictionaryView()
                         .tabItem {
                             tab.image
                             Text(tab.text)
@@ -49,7 +42,6 @@ struct ContentView: View {
             }
         }
         .tint(Color.custom.yellow)
-        .environmentObject(coordinator)
         .environmentObject(coreDataViewModel)
     }
 }

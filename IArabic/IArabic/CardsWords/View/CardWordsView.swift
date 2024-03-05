@@ -41,7 +41,7 @@ struct CardWordsView: View {
             Spacer()
             
             Button {
-                coordinator.present(fullScreenCover: .newWord)
+//                coordinator.present(fullScreenCover: .newWord)
             } label: {
                 Image(systemName: "plus")
                     .foregroundColor(Color.custom.yellow)

@@ -6,17 +6,16 @@
 //
 
 import Foundation
-import KeychainSwift
 
-class Keychain {
-    static var standart: KeychainSwift = KeychainSwift()
+import Combine
+
+
+final class Network {
+    static let shared: Network = Network()
     private init() {}
 }
 
-final class Network {
-    static var shared: Network = Network()
-    private init() {}
-    
+extension Network {
     func push<T: Decodable>(api: Api,
                             params: [String: String] = [:],
                             header: [String: String] = [:],
@@ -69,45 +68,13 @@ final class Network {
     }
 }
 
+
 enum HTTPMethod: String {
     case get = "GET"
     case post = "POST"
     case delete = "DELETE"
     case put = "PUT"
 }
-
-enum Api {
-    case words
-    case translate
-    case languages
-    case auth
-    case unsplash
-    
-    private var defaultURLYandex: String { return "https://translate.api.cloud.yandex.net/translate/v2/" }
-    
-    //MARK: - PATH
-    var path: String {
-        switch self {
-        case .words:     return "http://80.78.253.225/html/api/words.php"
-        case .translate: return defaultURLYandex + "translate"
-        case .auth:      return "https://iam.api.cloud.yandex.net/iam/v1/tokens"
-        case .languages: return defaultURLYandex + "languages"
-        case .unsplash:  return "https://api.unsplash.com/search/collections"
-        }
-    }
-    
-    //MARK: - METHOD
-    var method: String {
-        switch self {
-        case .words:     return HTTPMethod.get.rawValue
-        case .translate: return HTTPMethod.post.rawValue
-        case .auth:      return HTTPMethod.post.rawValue
-        case .languages: return HTTPMethod.post.rawValue
-        case .unsplash:  return HTTPMethod.get.rawValue
-        }
-    }
-}
-
 
 enum Result<Model> {
     case succes(model: Model)
@@ -218,8 +185,6 @@ extension Network {
 }
 
 
-
-
 extension Network {
     struct TranslatePushModel: Codable {
         let folderId: String
@@ -270,4 +235,121 @@ struct TranslateModel: Codable {
 struct Translation: Codable {
     let text: String?                 //само слово перевода
     let detectedLanguageCode: String? //prefix
+}
+
+
+//MARK: - NetworkManeger Combine
+
+
+extension Network {
+
+ 
+
+    // Функция аутентификации, использующая Combine
+    func auth() -> AnyPublisher<String, Error> {
+        let api = Api.auth // Предполагается, что у вас есть enum Api с определением endpoint'ов
+        let encodeValue = AuthModel(yandexPassportOauthToken: YandexKey.key)
+
+        guard let encodedData = try? JSONEncoder().encode(encodeValue),
+              let url = URL(string: api.path) else {
+            return Fail(error: StatusCode(300)).eraseToAnyPublisher()
+        }
+
+        var request = URLRequest(url: url, timeoutInterval: 10)
+        request.httpMethod = api.method
+        request.httpBody = encodedData
+
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { output in
+                guard let httpResponse = output.response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
+                    throw StatusCode(300)
+                }
+                return output.data
+            }
+            .decode(type: ParsingAuthData.self, decoder: JSONDecoder())
+            .tryMap { parsingAuthData in
+                guard let iamToken = parsingAuthData.iamToken else {
+                    throw StatusCode(401)
+                }
+                return iamToken
+            }
+            .eraseToAnyPublisher()
+    }
+
+    // Обновленный метод push, использующий Combine
+    func push<T: Decodable>(api: Api,
+                            params: [String: String] = [:],
+                            header: [String: String] = [:],
+                            body: Data? = nil,
+                            type: T.Type) -> AnyPublisher<T, Error> {
+        let queryString = params.map { "\($0)=\($1)" }.joined(separator: "&")
+        let fullPath = params.isEmpty ? api.path : "\(api.path)?\(queryString)"
+
+        guard let url = URL(string: fullPath) else {
+            return Fail(error: StatusCode(300)).eraseToAnyPublisher()
+        }
+
+        var request = URLRequest(url: url)
+        request.timeoutInterval = 10
+        request.httpMethod = api.method
+        request.httpBody = body
+        header.forEach { request.addValue($1, forHTTPHeaderField: $0) }
+
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { output in
+                guard let httpResponse = output.response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
+                    throw StatusCode()
+                }
+                return output.data
+            }
+            .decode(type: T.self, decoder: JSONDecoder())
+            .mapError { error in
+                // Обработка ошибок и преобразование их в тип StatusCode
+                (error as? StatusCode) ?? StatusCode(error: error)
+            }
+            .eraseToAnyPublisher()
+    }
+
+    // Использование auth для повторного выполнения запроса после аутентификации
+    func retryPushAfterAuth<T: Decodable>(apiForPush: Api,
+                                          paramsForPush: [String: String],
+                                          headerForPush: [String: String],
+                                          bodyForPush: Data?,
+                                          typeForPush: T.Type) -> AnyPublisher<T, Error> {
+        auth().flatMap { iamToken -> AnyPublisher<T, Error> in
+            var newHeader = headerForPush
+            newHeader["Authorization"] = "Bearer \(iamToken)"
+            return self.push(api: apiForPush, params: paramsForPush, header: newHeader, body: bodyForPush, type: typeForPush)
+        }
+        .eraseToAnyPublisher()
+    }
+}
+
+
+extension Network {
+    func translate(text: String, prefix: String) -> AnyPublisher<String, Error> {
+        let model = TranslatePushModel(texts: [text], targetLanguageCode: prefix)
+        guard let postData = try? JSONEncoder().encode(model) else {
+            return Fail(error: StatusCode(300)).eraseToAnyPublisher()
+        }
+
+        let api = Api.translate // Убедитесь, что Api поддерживает endpoint translate
+        let token = Keychain.standart.get("IamTokenKey") ?? ""
+        let headers = [
+            "Accept-Language": "ru",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(token)"
+        ]
+
+        return push(api: api, params: [:], header: headers, body: postData, type: TranslateModel.self)
+            .tryMap { translateModel -> String in
+                guard let translation = translateModel.translations.first?.text else {
+                    throw StatusCode(400) // или другой подходящий код ошибки
+                }
+                return translation
+            }
+            .eraseToAnyPublisher()
+    }
 }

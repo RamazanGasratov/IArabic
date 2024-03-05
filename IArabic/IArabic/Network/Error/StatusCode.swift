@@ -10,7 +10,7 @@
 
 import Foundation
 
-struct StatusCode {
+struct StatusCode: Error {
     var success: Bool
     var title: String?
     var messeng: String?

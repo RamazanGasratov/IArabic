@@ -13,19 +13,33 @@ struct NewWordView: View {
     @State private var showAssSheet = false
     @State private var imageMain = UIImage()
     @State private var associateImage = UIImage()
+    @State var arabWord: String = ""
     
     @State private var showAlert = false
     @State private var alertTitle = ""
     @State private var alertDescription = ""
     
+    @Environment(\.dismiss) var dismiss
+    
+    @StateObject var vm = NewWordViewModel()
+    
+    @EnvironmentObject var vmCoreData: CoreDataViewModel
+    @EnvironmentObject private var coordinator: Coordinator
+    
+    var arabText: String {
+        get {
+            vm.arabWord
+        }
+    }
+    
     // Добавляем опциональный параметр для редактируемого слова
-        var editingWord: Words?
+    var editingWord: Words?
 
         // Инициализатор для установки начальных значений при редактировании
-    init(editingWord: Words? = nil) {
+    init(editing: Words? = nil) {
             if let editingWord = editingWord {
                 _russianWord = State(initialValue: editingWord.title ?? "")
-//                vm.arabWord = editingWord.translate ?? ""
+               _arabWord = State(initialValue: editingWord.translate ?? "")
                 if let mainImageData = editingWord.imageMain, let mainImage = UIImage(data: mainImageData) {
                     _imageMain = State(initialValue: mainImage)
                 }
@@ -33,17 +47,12 @@ struct NewWordView: View {
                     _associateImage = State(initialValue: associateImage)
                 }
             }
+        
+        print("открыта карточка \(russianWord)")
         }
     
-    @StateObject var vm = NewWordViewModel()
-    
-    @EnvironmentObject var vmCoreData: CoreDataViewModel
-    @EnvironmentObject private var coordinator: Coordinator
-
-    @Environment(\.dismiss) var dismiss
-    
     var body: some View {
-      
+        NavigationStack {
             ScrollView {
                 ZStack {
                     VStack(spacing: 25) {
@@ -87,13 +96,13 @@ struct NewWordView: View {
                     saveButton
                 }
             }
-        
+        }
         
     }
     
     private var cancelButton: some View {
         Button {
-            coordinator.dismissSheet()
+           dismiss()
         } label: {
             Text("Отменить")
                 .foregroundColor(Color.custom.yellow)
@@ -104,6 +113,7 @@ struct NewWordView: View {
     private var saveButton: some View {
         Button {
             saveWord()
+            dismiss()
         } label: {
             Text("Сохранить")
                 .foregroundColor(Color.custom.yellow)
@@ -136,7 +146,7 @@ struct NewWordView: View {
                 CustomWordAndDetailView(text: "Слово", description: "на русском языке")
                 
                 Spacer()
-                
+            
                 Button {
                     vm.translate(text: russianWord, prefix: "ar")
                 } label: {
@@ -161,7 +171,9 @@ struct NewWordView: View {
         VStack(alignment: .leading) {
             CustomWordAndDetailView(text: "Перевод", description: "на арабском языке")
         
-            Text(vm.arabWord)
+        
+            
+            Text(arabWord.isEmpty ?  vm.arabWord : arabWord)
                     .font(.montserrat(.regular, size: 25))
             
             .padding(.top, 20)
@@ -192,21 +204,27 @@ struct NewWordView: View {
 
     private func saveWord() {
         // Проверка, что все поля и изображения заполнены
-        if russianWord.isEmpty || vm.arabWord.isEmpty || imageMain.pngData() == nil || associateImage.pngData() == nil {
-            // Обновляем состояния для показа алерта с сообщением об ошибке
-            alertTitle = "Ошибка"
-            alertDescription = "Так нельзя ! Заполни все поля, пожалуйста."
-            showAlert = true
-            return
-        }
+//        if russianWord.isEmpty || vm.arabWord.isEmpty || imageMain.pngData() == nil || associateImage.pngData() == nil {
+//            // Обновляем состояния для показа алерта с сообщением об ошибке
+//            alertTitle = "Ошибка"
+//            alertDescription = "Все поля должны быть заполнены."
+//            showAlert = true
+//            return
+//        }
         
         // Если все в порядке, продолжаем процесс сохранения
         guard let imageMainData = imageMain.pngData(), let imageAssociateData = associateImage.pngData() else { return }
         
-        vmCoreData.addNewWord(title: russianWord, translateText: vm.arabWord, imageMain: imageMainData, associatImage: imageAssociateData)
-        
-        dismiss()
+        if let editingWord = editingWord {
+            // Обновляем существующее слово
+            vmCoreData.updateWord(word: editingWord, title: russianWord, translateText: arabWord, imageMain: imageMainData, associatImage: imageAssociateData)
+        } else {
+            // Добавляем новое слово
+            vmCoreData.addNewWord(title: russianWord, translateText: vm.arabWord, imageMain: imageMainData, associatImage: imageAssociateData)
+        }
     }
+    
+    
 }
 
 #Preview {

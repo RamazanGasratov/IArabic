@@ -8,63 +8,93 @@
 import SwiftUI
 
 struct LibraryView: View {
-    @State private var presenNewWords: Bool = false
+    @State private var presentNewWord: Bool = false
     @EnvironmentObject var vmCoreData: CoreDataViewModel
-    @EnvironmentObject private var coordinator: Coordinator
+    @State  var selectedWord: Words?
     
     var body: some View {
-        VStack {
-            HStack {
-                Text("Библиотека")
-                    .font(.montserrat(.extraBold, size: 30))
-                    .padding(.leading, 10)
-                    .padding(.top, 10)
+        NavigationView {
+            VStack {
+                HStack {
+                    Text("Библиотека")
+                        .font(.montserrat(.extraBold, size: 30))
+                        .padding(.leading, 10)
+                        .padding(.top, 10)
+                    
+                    Spacer()
+                }
+                .padding(.top, 40)
                 
-                Spacer()
-            }
-            .padding(.top, 40)
-
-            ScrollView {
+                ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
                         Button(action: {
-                            self.coordinator.present(sheet: .newWord)
-                                        }) {
-                                            VStack(spacing: 10) {
-                                                Image(systemName: "plus") //
-                                                    .foregroundColor(Color.custom.yellow)
-                                                    .padding(20)
-                                                    .background(
-                                                        Circle().fill(Color.custom.lightYellow)
-                                                    )
-                                                
-                                                VStack(spacing: 1) {
-                                                    Text("Новое")
-                                                        .font(.montserrat(.bold, size: 14))
-                                                      
-                                                    Text("слово")
-                                                        .font(.montserrat(.bold, size: 13))
-                                                }
-                                                .foregroundColor(Color.custom.black)
-                                                .padding(.horizontal, 5)
-                                            }
-                                            .frame(width: 115, height: 170)
-                                            .background(Color.white)
-                                            .cornerRadius(15)
-                                        }
+                            self.presentNewWord = true
+                        }) {
+                            VStack(spacing: 10) {
+                                Image(systemName: "plus") //
+                                    .foregroundColor(Color.custom.yellow)
+                                    .padding(20)
+                                    .background(
+                                        Circle().fill(Color.custom.lightYellow)
+                                    )
+                                
+                                VStack(spacing: 1) {
+                                    Text("Новое")
+                                        .font(.montserrat(.bold, size: 14))
+                                    
+                                    Text("слово")
+                                        .font(.montserrat(.bold, size: 13))
+                                }
+                                .foregroundColor(Color.custom.black)
+                                .padding(.horizontal, 5)
+                            }
+                            .frame(width: 115, height: 170)
+                            .background(Color.white)
+                            .cornerRadius(15)
+                        }
                         
                         ForEach(vmCoreData.saveEntities, id: \.id) { word in
-                            
-                            LibraryItemView(word: word)
-                                .environmentObject(coordinator)
-                                        }
+                            VStack(spacing: 10) {
+                                ImageManager.loadImage(from: word.imageMain)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 85, height: 85)
+                                    .clipShape(Circle())
+                                
+                                VStack(spacing: 5) {
+                                    Text(word.translate ?? "")
+                                        .font(.montserrat(.bold, size: 16))
+                                        .lineLimit(1)
+                                    Text(word.title ?? "" )
+                                        .font(.montserrat(.regular, size: 12))
+                                        .lineLimit(1)
+                                }
+                                .foregroundColor(Color.custom.black)
+                                .padding(.horizontal, 5)
+                            }
+                            .frame(width: 115, height: 170)
+                            .background(Color.white)
+                            .cornerRadius(15)
+//                            .onTapGesture {
+//                                presentNewWord = true
+//                                selectedWord = word
+//                            }
+                           
+                        }
+                        
                     }
+                    .fullScreenCover(isPresented: $presentNewWord, content: {
+                        NewWordView(editing: selectedWord).environmentObject(vmCoreData) // Используйте selectedWord для передачи выбранного слова
+                       })
                     .padding()
                 }
+            }
+            .applyBG()
+//            .sheet(isPresented: $presentNewWord) {
+//                // Передаём CoreDataViewModel в новое представление
+//                NewWordView().environmentObject(vmCoreData)
+//            }
         }
-        .applyBG()
-        .fullScreenCover(isPresented: $presenNewWords, content: {
-            NewWordView()
-        })
     }
 }
 
@@ -72,39 +102,6 @@ struct LibraryView: View {
     LibraryView()
 }
 
-
-struct LibraryItemView: View {
-    var word: Words // Предполагается, что у вас есть такой тип данных
-    @EnvironmentObject private var coordinator: Coordinator
-    
-    var body: some View {
-        Button(action: {
-            coordinator.editWord(word)
-        }) {
-            VStack(spacing: 10) {
-                ImageManager.loadImage(from: word.imageMain)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 85, height: 85)
-                    .clipShape(Circle())
-                
-                VStack(spacing: 5) {
-                    Text(word.translate ?? "")
-                        .font(.montserrat(.bold, size: 16))
-                        .lineLimit(1)
-                    Text(word.title ?? "" )
-                        .font(.montserrat(.regular, size: 12))
-                        .lineLimit(1)
-                }
-                .foregroundColor(Color.custom.black)
-                .padding(.horizontal, 5)
-            }
-            .frame(width: 115, height: 170)
-            .background(Color.white)
-            .cornerRadius(15)
-        }
-    }
-}
 
 
 class ImageManager {
@@ -115,3 +112,4 @@ class ImageManager {
         return Image(uiImage: uiImage)
     }
 }
+
