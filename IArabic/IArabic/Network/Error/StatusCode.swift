@@ -5,8 +5,6 @@
 //  Created by Ramazan Gasratov on 08.02.2024.
 //
 
-//    y0_AgAAAABcJ33zAATuwQAAAADfr_fGlFrCxQFgSy6nttw6LnJO_IATfs0
-
 
 import Foundation
 

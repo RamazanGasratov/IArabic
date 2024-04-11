@@ -223,8 +223,6 @@ struct NewWordView: View {
             vmCoreData.addNewWord(title: russianWord, translateText: vm.arabWord, imageMain: imageMainData, associatImage: imageAssociateData)
         }
     }
-    
-    
 }
 
 #Preview {

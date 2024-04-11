@@ -57,6 +57,7 @@
 		ADBA06732B70F7DA004BCF69 /* Montserrat-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADBA06612B70F7DA004BCF69 /* Montserrat-ExtraBoldItalic.ttf */; };
 		ADBA06762B70FA25004BCF69 /* Ext+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBA06752B70FA25004BCF69 /* Ext+Color.swift */; };
 		ADBA06782B70FB2F004BCF69 /* Ext+Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBA06772B70FB2F004BCF69 /* Ext+Fonts.swift */; };
+		ADD56E022B98B94900D47ABA /* YandexTranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD56E012B98B94900D47ABA /* YandexTranslate.swift */; };
 		ADED58D42B78EB580085EDD3 /* LibraryView .swift in Sources */ = {isa = PBXBuildFile; fileRef = ADED58D32B78EB580085EDD3 /* LibraryView .swift */; };
 /* End PBXBuildFile section */
 
@@ -111,6 +112,7 @@
 		ADBA06742B70F98F004BCF69 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		ADBA06752B70FA25004BCF69 /* Ext+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+Color.swift"; sourceTree = "<group>"; };
 		ADBA06772B70FB2F004BCF69 /* Ext+Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+Fonts.swift"; sourceTree = "<group>"; };
+		ADD56E012B98B94900D47ABA /* YandexTranslate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexTranslate.swift; sourceTree = "<group>"; };
 		ADED58D32B78EB580085EDD3 /* LibraryView .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryView .swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -216,6 +218,7 @@
 		AD4B803D2B979A3500C93BC4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				ADD56E012B98B94900D47ABA /* YandexTranslate.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				ADB0FC292B7818AC001153DA /* Keys.swift in Sources */,
 				ADED58D42B78EB580085EDD3 /* LibraryView .swift in Sources */,
 				AD5753602B52BA3400FA7683 /* IArabic.xcdatamodeld in Sources */,
+				ADD56E022B98B94900D47ABA /* YandexTranslate.swift in Sources */,
 				AD20F93C2B8660C70016E0E1 /* Coordinator .swift in Sources */,
 				AD4B80392B97998500C93BC4 /* KeychainManeger.swift in Sources */,
 				AD1B4ABC2B7A6CB3007563A2 /* DictionaryView.swift in Sources */,
