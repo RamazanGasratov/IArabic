@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -291,11 +291,11 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		AD80F9882B8FC97D0013C059 /* New Group */ = {
+		AD80F9882B8FC97D0013C059 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = "New Group";
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		ADA795002B52BFF8003B14A9 /* CardsWords */ = {
@@ -415,7 +415,7 @@
 		ADED58D12B78EB1A0085EDD3 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				AD80F9882B8FC97D0013C059 /* New Group */,
+				AD80F9882B8FC97D0013C059 /* ViewModel */,
 				ADED58D22B78EB3D0085EDD3 /* View */,
 			);
 			path = Library;
@@ -470,7 +470,7 @@
 				};
 			};
 			buildConfigurationList = AD57534B2B52BA3300FA7683 /* Build configuration list for PBXProject "IArabic" */;
-			compatibilityVersion = "Xcode 14.0";
+			compatibilityVersion = "Xcode 15.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -707,6 +707,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = RamazanGasratov.IArabic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -738,6 +742,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = RamazanGasratov.IArabic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct NewWordView: View {
-    @State private var russianWord: String = ""
+//    @State private var russianWord: String = ""
     @State private var showMainSheet = false
     @State private var showAssSheet = false
     @State private var imageMain = UIImage()
     @State private var associateImage = UIImage()
-    @State var arabWord: String = ""
+//    @State var arabWord: String = ""
     
     @State private var showAlert = false
     @State private var alertTitle = ""
@@ -22,34 +22,35 @@ struct NewWordView: View {
     @Environment(\.dismiss) var dismiss
     
     @StateObject var vm = NewWordViewModel()
-    
-    @EnvironmentObject var vmCoreData: CoreDataViewModel
+
     @EnvironmentObject private var coordinator: Coordinator
     
-    var arabText: String {
-        get {
-            vm.arabWord
-        }
-    }
+    @Environment(\.managedObjectContext) var moc
     
+//    var arabText: String {
+//        get {
+//            vm.arabWord
+//        }
+//    }
+//    
     // Добавляем опциональный параметр для редактируемого слова
     var editingWord: Words?
 
         // Инициализатор для установки начальных значений при редактировании
-    init(editing: Words? = nil) {
-            if let editingWord = editingWord {
-                _russianWord = State(initialValue: editingWord.title ?? "")
-               _arabWord = State(initialValue: editingWord.translate ?? "")
-                if let mainImageData = editingWord.imageMain, let mainImage = UIImage(data: mainImageData) {
-                    _imageMain = State(initialValue: mainImage)
-                }
-                if let associateImageData = editingWord.associatImage, let associateImage = UIImage(data: associateImageData) {
-                    _associateImage = State(initialValue: associateImage)
-                }
-            }
-        
-        print("открыта карточка \(russianWord)")
-        }
+//    init(editing: Words? = nil) {
+//            if let editingWord = editingWord {
+//                _russianWord = State(initialValue: editingWord.title ?? "")
+//               _arabWord = State(initialValue: editingWord.translate ?? "")
+//                if let mainImageData = editingWord.imageMain, let mainImage = UIImage(data: mainImageData) {
+//                    _imageMain = State(initialValue: mainImage)
+//                }
+//                if let associateImageData = editingWord.associatImage, let associateImage = UIImage(data: associateImageData) {
+//                    _associateImage = State(initialValue: associateImage)
+//                }
+//            }
+//        
+//        print("открыта карточка \(vm.rusWord)")
+//        }
     
     var body: some View {
         NavigationStack {
@@ -148,7 +149,7 @@ struct NewWordView: View {
                 Spacer()
             
                 Button {
-                    vm.translate(text: russianWord, prefix: "ar")
+                    vm.translate(prefix: "ar")
                 } label: {
                     Text("Перевести")
                         .foregroundColor(Color.custom.yellow)
@@ -157,7 +158,7 @@ struct NewWordView: View {
                 }
             }
             
-            TextField(text: $russianWord, label: {
+            TextField(text: $vm.rusWord, label: {
                 Text("Текст")
                     .font(.montserrat(.regular, size: 17))
             })
@@ -170,10 +171,8 @@ struct NewWordView: View {
     private var translateArabicView: some View {
         VStack(alignment: .leading) {
             CustomWordAndDetailView(text: "Перевод", description: "на арабском языке")
-        
-        
-            
-            Text(arabWord.isEmpty ?  vm.arabWord : arabWord)
+    
+            Text(vm.arabWord)
                     .font(.montserrat(.regular, size: 25))
             
             .padding(.top, 20)
@@ -203,25 +202,20 @@ struct NewWordView: View {
     }
 
     private func saveWord() {
-        // Проверка, что все поля и изображения заполнены
-//        if russianWord.isEmpty || vm.arabWord.isEmpty || imageMain.pngData() == nil || associateImage.pngData() == nil {
-//            // Обновляем состояния для показа алерта с сообщением об ошибке
-//            alertTitle = "Ошибка"
-//            alertDescription = "Все поля должны быть заполнены."
-//            showAlert = true
-//            return
-//        }
-        
-        // Если все в порядке, продолжаем процесс сохранения
         guard let imageMainData = imageMain.pngData(), let imageAssociateData = associateImage.pngData() else { return }
-        
-        if let editingWord = editingWord {
-            // Обновляем существующее слово
-            vmCoreData.updateWord(word: editingWord, title: russianWord, translateText: arabWord, imageMain: imageMainData, associatImage: imageAssociateData)
-        } else {
-            // Добавляем новое слово
-            vmCoreData.addNewWord(title: russianWord, translateText: vm.arabWord, imageMain: imageMainData, associatImage: imageAssociateData)
-        }
+
+        let newWord = Words(context: self.moc)
+        newWord.imageMain = imageMainData
+        newWord.associatImage = imageAssociateData
+    
+        newWord.title = vm.rusWord
+        newWord.translate = vm.arabWord
+
+         do {
+           try self.moc.save()
+         } catch {
+           print(error.localizedDescription)
+         }
     }
 }
 
@@ -235,9 +229,7 @@ struct CustomAlertError: View {
     @Binding var isOn: Bool
     
     var body: some View {
-        
         ZStack {
-            
             HStack(spacing: 15) {
                 VStack(alignment: .leading, spacing: 5) {
                     Text(title)

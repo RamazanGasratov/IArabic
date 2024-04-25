@@ -11,11 +11,11 @@ struct CardWordsRow: View {
     
     @State var currentIndex: Int = 0
     
-    @ObservedObject var vmCoreData: CoreDataViewModel
+    var words: FetchedResults<Words>
     
     var body: some View {
         VStack(spacing: 15) {
-            SnapCarousel(index: $currentIndex, items: vmCoreData.saveEntities.reversed()) { word in
+            SnapCarousel(index: $currentIndex, items: words.reversed()) { word in
                 
                 GeometryReader { proxy in
                     let size = proxy.size
@@ -29,7 +29,7 @@ struct CardWordsRow: View {
         .frame(maxHeight: .infinity, alignment: .top)
     }
 }
-
-#Preview {
-    CardWordsRow(vmCoreData: CoreDataViewModel())
-}
+//
+//#Preview {
+//    CardWordsRow(vmCoreData: CoreDataViewModel())
+//}

@@ -6,103 +6,111 @@
 //
 
 import SwiftUI
+import UIKit
+import CoreData
 
 struct LibraryView: View {
     @State private var presentNewWord: Bool = false
-    @EnvironmentObject var vmCoreData: CoreDataViewModel
-    @State  var selectedWord: Words?
+    @State private var showingDeleteAlert = false
+    @State private var wordToDelete: Words?
+    
+    private let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 10), count: 2)
+    
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(entity: Words.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Words.title, ascending: false)]) var words: FetchedResults<Words>
     
     var body: some View {
-        NavigationView {
-            VStack {
-                HStack {
-                    Text("Библиотека")
-                        .font(.montserrat(.extraBold, size: 30))
-                        .padding(.leading, 10)
-                        .padding(.top, 10)
-                    
-                    Spacer()
-                }
-                .padding(.top, 40)
-                
-                ScrollView {
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
-                        Button(action: {
-                            self.presentNewWord = true
-                        }) {
-                            VStack(spacing: 10) {
-                                Image(systemName: "plus") //
-                                    .foregroundColor(Color.custom.yellow)
-                                    .padding(20)
-                                    .background(
-                                        Circle().fill(Color.custom.lightYellow)
-                                    )
-                                
-                                VStack(spacing: 1) {
-                                    Text("Новое")
-                                        .font(.montserrat(.bold, size: 14))
-                                    
-                                    Text("слово")
-                                        .font(.montserrat(.bold, size: 13))
-                                }
-                                .foregroundColor(Color.custom.black)
-                                .padding(.horizontal, 5)
-                            }
-                            .frame(width: 115, height: 170)
-                            .background(Color.white)
-                            .cornerRadius(15)
-                        }
-                        
-                        ForEach(vmCoreData.saveEntities, id: \.id) { word in
-                            VStack(spacing: 10) {
-                                ImageManager.loadImage(from: word.imageMain)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 85, height: 85)
-                                    .clipShape(Circle())
-                                
-                                VStack(spacing: 5) {
-                                    Text(word.translate ?? "")
-                                        .font(.montserrat(.bold, size: 16))
-                                        .lineLimit(1)
-                                    Text(word.title ?? "" )
-                                        .font(.montserrat(.regular, size: 12))
-                                        .lineLimit(1)
-                                }
-                                .foregroundColor(Color.custom.black)
-                                .padding(.horizontal, 5)
-                            }
-                            .frame(width: 115, height: 170)
-                            .background(Color.white)
-                            .cornerRadius(15)
-//                            .onTapGesture {
-//                                presentNewWord = true
-//                                selectedWord = word
-//                            }
-                           
-                        }
-                        
+        VStack {
+            navigationBar
+                .padding(.horizontal, 12)
+                .padding(.top, 10)
+            
+            libraryCellRow
+            Spacer()
+        }
+        .applyBG()
+        .fullScreenCover(isPresented: $presentNewWord, content: {
+            NewWordView()
+        })
+        .alert("Удалить слово?", isPresented: $showingDeleteAlert) {
+            Button("Удалить", role: .destructive) {
+                if let word = wordToDelete {
+                    withAnimation {
+                        delete(word)
                     }
-                    .fullScreenCover(isPresented: $presentNewWord, content: {
-                        NewWordView(editing: selectedWord).environmentObject(vmCoreData) // Используйте selectedWord для передачи выбранного слова
-                       })
-                    .padding()
                 }
             }
-            .applyBG()
-//            .sheet(isPresented: $presentNewWord) {
-//                // Передаём CoreDataViewModel в новое представление
-//                NewWordView().environmentObject(vmCoreData)
-//            }
+            Button("Отмена", role: .cancel) { }
+        } message: {
+            Text("Вы уверены, что хотите удалить это слово?")
         }
+    }
+    
+    private var navigationBar: some View {
+        HStack {
+            Text("Библиотека")
+                .foregroundColor(Color.custom.black)
+                .font(.montserrat(.extraBold, size: 30))
+            Spacer()
+        }
+    }
+    
+    private var libraryCellRow: some View {
+        ScrollView {
+            LazyVGrid(columns: columns, spacing: 10) {
+                Button(action: {
+                    self.presentNewWord = true
+                }) {
+                    newWordButton
+                }
+                
+                ForEach(words) { word in
+                   LibraryItemView(word: word)
+                        .onTapGesture(count: 2) {
+                            withAnimation {
+                                   let impactMed = UIImpactFeedbackGenerator(style: .medium)
+                                   impactMed.impactOccurred()
+   
+                                   wordToDelete = word
+                                   showingDeleteAlert = true
+                            }
+                        }
+                        .cornerRadius(15)
+                }
+            }
+            .padding()
+        }
+    }
+    
+    private var newWordButton: some View {
+        VStack(spacing: 45) {
+            Image(systemName: "plus") //
+                .font(.system(size: 40))
+                .foregroundColor(Color.custom.yellow)
+                .padding(30)
+                .background(
+                    Circle().fill(Color.custom.lightYellow)
+                )
+            
+            VStack(spacing: 1) {
+                Text("Новое")
+                    .font(.montserrat(.bold, size: 22))
+                
+                Text("слово")
+                    .font(.montserrat(.bold, size: 20))
+            }
+            .foregroundColor(Color.custom.black)
+            .padding(.horizontal, 5)
+        }
+        .frame(minWidth: 170, maxWidth: .infinity, minHeight: 300, maxHeight: .infinity)
+        .background(Color.custom.white)
+        .cornerRadius(15)
     }
 }
 
 #Preview {
     LibraryView()
 }
-
-
 
 class ImageManager {
     static func loadImage(from data: Data?) -> Image {
@@ -113,3 +121,21 @@ class ImageManager {
     }
 }
 
+extension LibraryView {
+    
+    func delete(_ word: Words) {
+            // Получите контекст управляемого объекта
+            let managedObjectContext = word.managedObjectContext
+            
+            // Удалите слово из контекста
+            managedObjectContext?.delete(word)
+            
+            // Сохраните изменения в контексте
+            do {
+                try managedObjectContext?.save()
+            } catch {
+                // Обработка возможной ошибки
+                print("Ошибка при сохранении контекста: \(error)")
+            }
+    }
+}

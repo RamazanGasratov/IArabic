@@ -11,9 +11,12 @@ import CoreData
 struct CardWordsView: View {
     @State private var isToggleOn = false
     @State private var isDestinationNewWord = false
+    @State private var presentNewWord: Bool = false
     
     @EnvironmentObject var vmCoreData: CoreDataViewModel
     @EnvironmentObject private var coordinator: Coordinator
+    
+    @FetchRequest(entity: Words.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Words.title, ascending: false)]) var words: FetchedResults<Words>
     
     var body: some View {
             VStack() {
@@ -25,12 +28,12 @@ struct CardWordsView: View {
                 
                 Spacer()
                 
-                CardWordsRow(vmCoreData: vmCoreData)
-            }
-            .onAppear {
-                vmCoreData.featchCardWords()
+                CardWordsRow(words: words)
             }
             .background(Color.custom.backgroundColor)
+            .fullScreenCover(isPresented: $presentNewWord, content: {
+                NewWordView()
+            })
     }
     
     private var navigationView: some View {
@@ -41,7 +44,7 @@ struct CardWordsView: View {
             Spacer()
             
             Button {
-//                coordinator.present(fullScreenCover: .newWord)
+                presentNewWord = true
             } label: {
                 Image(systemName: "plus")
                     .foregroundColor(Color.custom.yellow)

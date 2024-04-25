@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @StateObject private var coreDataViewModel = CoreDataViewModel()
+//    @StateObject private var coreDataViewModel = CoreDataViewModel()
     @State var selectedTab: Tab = .wordCards
     
     var body: some View {
@@ -42,7 +42,7 @@ struct ContentView: View {
             }
         }
         .tint(Color.custom.yellow)
-        .environmentObject(coreDataViewModel)
+//        .environmentObject(coreDataViewModel)
     }
 }
 
