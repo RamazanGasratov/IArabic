@@ -7,12 +7,15 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import Shimmer
 
 struct CardWordsItem: View {
     var textTitle: String?
     var textTranslate: String?
     var imageMain: Data?
     var imageAssociate: Data?
+    
+    @Binding var stateImageAssociate: Bool
     
     @State private var uiImageMain: UIImage? = nil
     @State private var uiImageAssociate: UIImage? = nil
@@ -80,15 +83,35 @@ struct CardWordsItem: View {
             if let uiImageMain = uiImageMain {
                 Image(uiImage: uiImageMain) // -  основная фотка
                     .resizable()
+                    .frame(width: 300, height: stateImageAssociate ? 208 : 380)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            }  else {
+               Image(systemName: "photo")
+                    .resizable()
                     .frame(width: 300, height: 208)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .shimmering()
             }
             
-            if let uiImageAssociate = uiImageAssociate {
-                Image(uiImage: uiImageAssociate) // -  ассоциация
-                    .resizable()
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .frame(width: 280, height: 183)
+            withAnimation {
+                
+                Group {
+                    
+                    if stateImageAssociate {
+                        if let uiImageAssociate = uiImageAssociate {
+                            Image(uiImage: uiImageAssociate) // -  ассоциация
+                                .resizable()
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .frame(width: 280, height: 183)
+                        } else {
+                            Image(systemName: "photo")
+                                .resizable()
+                                .frame(width: 280, height: 183)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .shimmering()
+                        }
+                    }
+                }
             }
         }
     }
@@ -101,7 +124,8 @@ struct CardWordsItem: View {
     }
 }
 
-#Preview {
-    CardWordsItem()
-}
+//#Preview {
+//    CardWordsItem()
+//}
+
 

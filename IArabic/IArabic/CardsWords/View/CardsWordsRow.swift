@@ -10,20 +10,16 @@ import SwiftUI
 struct CardWordsRow: View {
     
     @State var currentIndex: Int = 0
+    @Binding var stateAssociate: Bool
     
     var words: FetchedResults<Words>
     
     var body: some View {
-        VStack(spacing: 15) {
+        LazyVStack(spacing: 15) {
             SnapCarousel(index: $currentIndex, items: words.reversed()) { word in
-                
-                GeometryReader { proxy in
-                    let size = proxy.size
-        
-                    CardWordsItem(textTitle: word.title, textTranslate: word.translate, imageMain: word.imageMain, imageAssociate: word.associatImage)
-                        .frame(width: size.width)
+       
+                CardWordsItem(textTitle: word.title, textTranslate: word.translate, imageMain: word.imageMain, imageAssociate: word.associatImage, stateImageAssociate: $stateAssociate)
                         .cornerRadius(20)
-                }
             }
         }
         .frame(maxHeight: .infinity, alignment: .top)

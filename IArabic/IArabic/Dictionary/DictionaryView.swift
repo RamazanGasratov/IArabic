@@ -11,9 +11,18 @@ struct DictionaryView: View {
     @StateObject private var viewModel = DictionaryViewModel()
     @State private var text: String = ""
     @State private var isSearch = false
+    @State private var showAlert: Bool = false
+    
+//    @State private var selectedCategory: Category? = .init(id: "one")
+    
+    let categories = [
+        Category(id: "OneMed", name: "первый том"),
+        Category(id: "TwoMed", name: "второй том"),
+        Category(id: "ThreeMed", name: "третий том")
+    ]
     
     var body: some View {
-        VStack {
+        NavigationStack {
             navigationView
             
             ScrollView {
@@ -23,34 +32,118 @@ struct DictionaryView: View {
                     }
                 }
             }
+            .applyBG()
             .padding(.bottom, 5)
+            .overlay(
+                Group {
+                    if showAlert == true {
+                        CustomAlertError(title: "!!!", description: "Словарь составлен из слов мединского курса", isOn: $showAlert)
+                    }
+               
+                }
+            )
+            .navigationTitle("Словарь")
+            
         }
-        .applyBG()
     }
     
     private var navigationView: some View {
         VStack {
-            HStack {
-                Text("Топ слов")
-                    .font(.montserrat(.bold, size: 30))
-                
-                Spacer()
-            }
-            .padding(.leading)
-            .padding(.top, 2)
+//            HStack {
+////                Text("Словарь")
+////                    .font(.montserrat(.bold, size: 30))
+//                
+////                Spacer()
+////                
+////                Button {
+////                    showAlert.toggle()
+////                } label: {
+////                    Image(systemName: "exclamationmark.circle")
+////                        .font(.system(size: 20))
+////                        .foregroundColor(Color.custom.yellow)
+////                }
+//            }
+//            .padding(.horizontal)
+//            .padding(.top, 2)
             
             SearchBar(text: $viewModel.searchText, isEditing: $isSearch) // Убедитесь, что SearchBar обновляет $text
+            
+            categoryDictionaryView
         }
         .padding(.bottom, 10)
         .background(Color.custom.white)
     }
+    
+    private var categoryDictionaryView: some View {
+        ScrollView(.horizontal) {
+            HStack(spacing: 20) {
+                ForEach(categories) { category in
+                    CategoryButton(category: category, selection: $viewModel.selectedCategory)
+                }
+            }
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 5)
+        .overlayPreferenceValue(CategoryPreferenceKey.self) { preferences in
+            GeometryReader { proxy in
+                if let selected = preferences.first(where: { $0.category == viewModel.selectedCategory }) {
+                    let frame = proxy[selected.anchor]
+
+                    Rectangle()
+                        .fill(.black)
+                        .frame(width: frame.width, height: 2)
+                        .position(x: frame.midX, y: frame.maxY)
+                }
+            }
+        }
+    }
 }
+
 
 
 #Preview {
     DictionaryView()
 }
 
+struct CategoryButton: View {
+    var category: Category
+    @Binding var selection: Category?
+    
+    var body: some View {
+        
+        Button {
+            withAnimation {
+                selection = category
+            }
+        } label: {
+            Text(category.name)
+                .font(.montserrat(.medium, size: 16))
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement()
+        .accessibilityLabel(category.id)
+        .anchorPreference(key: CategoryPreferenceKey.self, value: .bounds, transform: { [CategoryPreference(category: category, anchor: $0)] })
+    }
+}
+
+
+struct Category: Identifiable, Equatable {
+    let id: String
+    let name: String
+}
+
+struct CategoryPreference: Equatable {
+    let category: Category
+    let anchor: Anchor<CGRect>
+}
+
+struct CategoryPreferenceKey: PreferenceKey {
+    static let defaultValue = [CategoryPreference]()
+    
+    static func reduce(value: inout [CategoryPreference], nextValue: () -> [CategoryPreference]) {
+        value.append(contentsOf: nextValue())
+    }
+}
 
 struct DictionaryViewItem: View {
     var rusText: String
@@ -69,6 +162,11 @@ struct DictionaryViewItem: View {
             Text(arText)
                 .foregroundStyle(Color.custom.black)
                 .font(.montserrat(.boldItalic, size: 30))
+                .padding(8)
+                .background(
+                RoundedRectangle(cornerRadius: 5)
+                    .fill(Color.custom.lightYellow)
+                )
                 .padding()
         }
         .background(Color.custom.white)

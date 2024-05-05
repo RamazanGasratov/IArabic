@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct LibraryItemView: View {
-    var word: Words
+    @ObservedObject var word: Words
     
     var body: some View {
         VStack(spacing: 40) {

@@ -9,14 +9,15 @@ import SwiftUI
 import CoreData
 
 struct CardWordsView: View {
-    @State private var isToggleOn = false
+    @AppStorage("isToggleOn") private var isToggleOn: Bool = false
     @State private var isDestinationNewWord = false
     @State private var presentNewWord: Bool = false
     
     @EnvironmentObject var vmCoreData: CoreDataViewModel
     @EnvironmentObject private var coordinator: Coordinator
     
-    @FetchRequest(entity: Words.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Words.title, ascending: false)]) var words: FetchedResults<Words>
+    @FetchRequest(entity: Words.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Words.title, ascending: false)]) 
+    var words: FetchedResults<Words>
     
     var body: some View {
             VStack() {
@@ -28,7 +29,7 @@ struct CardWordsView: View {
                 
                 Spacer()
                 
-                CardWordsRow(words: words)
+                CardWordsRow(stateAssociate: $isToggleOn, words: words)
             }
             .background(Color.custom.backgroundColor)
             .fullScreenCover(isPresented: $presentNewWord, content: {
