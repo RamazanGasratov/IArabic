@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 extension Color {
     
@@ -53,3 +54,11 @@ extension Color {
     }
 }
 
+extension UIColor {
+
+    class var custom: CustomColor { return CustomColor() }
+    
+    struct CustomColor {
+        var white: UIColor { return UIColor(named: "customWhite") ?? UIColor.white }
+    }
+}

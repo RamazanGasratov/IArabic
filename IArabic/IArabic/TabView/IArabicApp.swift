@@ -28,13 +28,11 @@ struct IArabicApp: App {
     let persistenceController = PersistenceController()
     
     init() {
-        UITabBar.appearance().backgroundColor = UIColor.white // Установка белого фона для UITabBar
-        UITabBar.appearance().isTranslucent = false // Отключение прозрачности
-        
+        UITabBar.appearance().backgroundColor = UIColor.custom.white // Установка белого фона для UITabBar
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor.white // Установить белый фон
+        appearance.backgroundColor = UIColor.custom.white // Установить белый фон
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }

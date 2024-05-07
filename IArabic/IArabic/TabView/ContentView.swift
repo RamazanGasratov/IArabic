@@ -42,7 +42,6 @@ struct ContentView: View {
             }
         }
         .tint(Color.custom.yellow)
-//        .environmentObject(coreDataViewModel)
     }
 }
 

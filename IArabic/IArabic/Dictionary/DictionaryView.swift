@@ -23,55 +23,48 @@ struct DictionaryView: View {
     
     var body: some View {
         NavigationStack {
-            navigationView
-            
-            ScrollView {
-                LazyVStack {
-                    ForEach(viewModel.filteredItems) { item in // Используйте отфильтрованные элементы
-                        DictionaryViewItem(rusText: item.rusText, arText: item.arText)
+            ZStack(alignment: .top) {
+                ScrollView {
+                    LazyVStack {
+                        Spacer().frame(height: 30)
+                        ForEach(viewModel.filteredItems) { item in
+                            DictionaryViewItem(rusText: item.rusText, arText: item.arText)
+                        }
                     }
                 }
-            }
-            .applyBG()
-            .padding(.bottom, 5)
-            .overlay(
-                Group {
-                    if showAlert == true {
-                        CustomAlertError(title: "!!!", description: "Словарь составлен из слов мединского курса", isOn: $showAlert)
+                .applyBG()
+                .overlay(
+                    Group {
+                        if showAlert {
+                            CustomAlertError(title: "Эй, арабист!", description: "Словарь составлен из слов мединского курса", isOn: $showAlert)
+                        }
                     }
+                )
+                .navigationTitle("Словарь")
+                .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
+                
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: {
+                            self.showAlert = true
+                        }) {
+                            Image(systemName: "info.square.fill")
+                                .font(.headline)
+                                .foregroundColor(Color.custom.yellow)
+                        }
+                    }
+                }
+                
+                VStack {
+                    categoryDictionaryView
+                        .frame(maxWidth: .infinity)
+                        .background(Color.custom.white)
+                    Spacer()
+                }
                
-                }
-            )
-            .navigationTitle("Словарь")
-            
+            }
         }
-    }
-    
-    private var navigationView: some View {
-        VStack {
-//            HStack {
-////                Text("Словарь")
-////                    .font(.montserrat(.bold, size: 30))
-//                
-////                Spacer()
-////                
-////                Button {
-////                    showAlert.toggle()
-////                } label: {
-////                    Image(systemName: "exclamationmark.circle")
-////                        .font(.system(size: 20))
-////                        .foregroundColor(Color.custom.yellow)
-////                }
-//            }
-//            .padding(.horizontal)
-//            .padding(.top, 2)
-            
-            SearchBar(text: $viewModel.searchText, isEditing: $isSearch) // Убедитесь, что SearchBar обновляет $text
-            
-            categoryDictionaryView
-        }
-        .padding(.bottom, 10)
-        .background(Color.custom.white)
+        .foregroundColor(Color.black)
     }
     
     private var categoryDictionaryView: some View {
@@ -90,7 +83,7 @@ struct DictionaryView: View {
                     let frame = proxy[selected.anchor]
 
                     Rectangle()
-                        .fill(.black)
+                        .fill(Color.custom.yellow)
                         .frame(width: frame.width, height: 2)
                         .position(x: frame.midX, y: frame.maxY)
                 }
@@ -117,6 +110,7 @@ struct CategoryButton: View {
             }
         } label: {
             Text(category.name)
+                .foregroundColor(Color.custom.black)
                 .font(.montserrat(.medium, size: 16))
         }
         .buttonStyle(.plain)
@@ -160,7 +154,7 @@ struct DictionaryViewItem: View {
             Spacer()
             
             Text(arText)
-                .foregroundStyle(Color.custom.black)
+                .foregroundStyle(Color.black)
                 .font(.montserrat(.boldItalic, size: 30))
                 .padding(8)
                 .background(

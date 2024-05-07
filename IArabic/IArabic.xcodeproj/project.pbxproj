@@ -60,9 +60,6 @@
 		ADC376A52BDBDE1100D79B37 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = ADC376A42BDBDE1100D79B37 /* Shimmer */; };
 		ADD56E022B98B94900D47ABA /* YandexTranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD56E012B98B94900D47ABA /* YandexTranslate.swift */; };
 		ADED58D42B78EB580085EDD3 /* LibraryView .swift in Sources */ = {isa = PBXBuildFile; fileRef = ADED58D32B78EB580085EDD3 /* LibraryView .swift */; };
-		ADF4E4EA2BE7F8910093E422 /* Victionary.json in Sources */ = {isa = PBXBuildFile; fileRef = ADF4E4E92BE7F8910093E422 /* Victionary.json */; };
-		ADF4E4EB2BE7FEEB0093E422 /* OneIItem.json in Resources */ = {isa = PBXBuildFile; fileRef = ADF4E4E72BE7F31A0093E422 /* OneIItem.json */; };
-		ADF4E4ED2BE8008B0093E422 /* twoItem.json in Resources */ = {isa = PBXBuildFile; fileRef = ADF4E4EC2BE8008B0093E422 /* twoItem.json */; };
 		ADF4E4F12BE801A60093E422 /* OneMed.json in Resources */ = {isa = PBXBuildFile; fileRef = ADF4E4F02BE801A60093E422 /* OneMed.json */; };
 		ADF4E4F32BE801E70093E422 /* TwoMed.json in Resources */ = {isa = PBXBuildFile; fileRef = ADF4E4F22BE801E70093E422 /* TwoMed.json */; };
 		ADF4E4F52BE802380093E422 /* ThreeMed.json in Resources */ = {isa = PBXBuildFile; fileRef = ADF4E4F42BE802380093E422 /* ThreeMed.json */; };
@@ -121,9 +118,6 @@
 		ADBA06772B70FB2F004BCF69 /* Ext+Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+Fonts.swift"; sourceTree = "<group>"; };
 		ADD56E012B98B94900D47ABA /* YandexTranslate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexTranslate.swift; sourceTree = "<group>"; };
 		ADED58D32B78EB580085EDD3 /* LibraryView .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryView .swift"; sourceTree = "<group>"; };
-		ADF4E4E72BE7F31A0093E422 /* OneIItem.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = OneIItem.json; sourceTree = "<group>"; };
-		ADF4E4E92BE7F8910093E422 /* Victionary.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Victionary.json; sourceTree = "<group>"; };
-		ADF4E4EC2BE8008B0093E422 /* twoItem.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = twoItem.json; sourceTree = "<group>"; };
 		ADF4E4F02BE801A60093E422 /* OneMed.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = OneMed.json; sourceTree = "<group>"; };
 		ADF4E4F22BE801E70093E422 /* TwoMed.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TwoMed.json; sourceTree = "<group>"; };
 		ADF4E4F42BE802380093E422 /* ThreeMed.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ThreeMed.json; sourceTree = "<group>"; };
@@ -273,8 +267,6 @@
 				ADBA06742B70F98F004BCF69 /* Info.plist */,
 				AD5753592B52BA3400FA7683 /* Preview Content */,
 				AD1499642B72954E007DAB97 /* TestScen.swift */,
-				ADF4E4EC2BE8008B0093E422 /* twoItem.json */,
-				ADF4E4E72BE7F31A0093E422 /* OneIItem.json */,
 				AD1177B62BCA883D00F5BA62 /* Launch Screen.storyboard */,
 				ADF4E4F02BE801A60093E422 /* OneMed.json */,
 				ADF4E4F22BE801E70093E422 /* TwoMed.json */,
@@ -450,7 +442,6 @@
 		ADF4E4E82BE7F8820093E422 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				ADF4E4E92BE7F8910093E422 /* Victionary.json */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -526,7 +517,6 @@
 				ADBA06722B70F7DA004BCF69 /* Montserrat-SemiBoldItalic.ttf in Resources */,
 				ADBA066A2B70F7DA004BCF69 /* Montserrat-MediumItalic.ttf in Resources */,
 				ADBA06692B70F7DA004BCF69 /* Montserrat-Bold.ttf in Resources */,
-				ADF4E4EB2BE7FEEB0093E422 /* OneIItem.json in Resources */,
 				ADBA06702B70F7DA004BCF69 /* Montserrat-Regular.ttf in Resources */,
 				ADBA066C2B70F7DA004BCF69 /* Montserrat-SemiBold.ttf in Resources */,
 				AD1177B72BCA883D00F5BA62 /* Launch Screen.storyboard in Resources */,
@@ -543,7 +533,6 @@
 				ADF4E4F32BE801E70093E422 /* TwoMed.json in Resources */,
 				ADBA066E2B70F7DA004BCF69 /* Montserrat-ExtraBold.ttf in Resources */,
 				ADBA066B2B70F7DA004BCF69 /* Montserrat-BlackItalic.ttf in Resources */,
-				ADF4E4ED2BE8008B0093E422 /* twoItem.json in Resources */,
 				ADBA06642B70F7DA004BCF69 /* Montserrat-BoldItalic.ttf in Resources */,
 				ADBA06712B70F7DA004BCF69 /* Montserrat-Italic.ttf in Resources */,
 				ADBA06732B70F7DA004BCF69 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
@@ -575,7 +564,6 @@
 				AD5753542B52BA3300FA7683 /* IArabicApp.swift in Sources */,
 				ADB0FC232B77F3E7001153DA /* NewWordViewCustomView.swift in Sources */,
 				ADB0FC262B780909001153DA /* NewWordViewModel.swift in Sources */,
-				ADF4E4EA2BE7F8910093E422 /* Victionary.json in Sources */,
 				ADB0FC292B7818AC001153DA /* Keys.swift in Sources */,
 				ADED58D42B78EB580085EDD3 /* LibraryView .swift in Sources */,
 				AD5753602B52BA3400FA7683 /* IArabic.xcdatamodeld in Sources */,
