@@ -6,51 +6,26 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct NewWordView: View {
-//    @State private var russianWord: String = ""
+
     @State private var showMainSheet = false
     @State private var showAssSheet = false
     @State private var imageMain = UIImage()
     @State private var associateImage = UIImage()
-//    @State var arabWord: String = ""
-    
-    @State private var showAlert = false
-    @State private var alertTitle = ""
-    @State private var alertDescription = ""
     
     @Environment(\.dismiss) var dismiss
     
     @StateObject var vm = NewWordViewModel()
-
+    
     @EnvironmentObject private var coordinator: Coordinator
     
     @Environment(\.managedObjectContext) var moc
     
-//    var arabText: String {
-//        get {
-//            vm.arabWord
-//        }
-//    }
-//    
-    // Добавляем опциональный параметр для редактируемого слова
-    var editingWord: Words?
+    let speechService = SpeechService()
 
-        // Инициализатор для установки начальных значений при редактировании
-//    init(editing: Words? = nil) {
-//            if let editingWord = editingWord {
-//                _russianWord = State(initialValue: editingWord.title ?? "")
-//               _arabWord = State(initialValue: editingWord.translate ?? "")
-//                if let mainImageData = editingWord.imageMain, let mainImage = UIImage(data: mainImageData) {
-//                    _imageMain = State(initialValue: mainImage)
-//                }
-//                if let associateImageData = editingWord.associatImage, let associateImage = UIImage(data: associateImageData) {
-//                    _associateImage = State(initialValue: associateImage)
-//                }
-//            }
-//        
-//        print("открыта карточка \(vm.rusWord)")
-//        }
+    var editingWord: Words?
     
     var body: some View {
         NavigationStack {
@@ -72,8 +47,8 @@ struct NewWordView: View {
                         Spacer()
                     }
                     
-                    if showAlert == true {
-                        CustomAlertError(title: alertTitle, description: alertDescription, isOn: $showAlert)
+                    if vm.showAlert == true {
+                        CustomAlertError(title: vm.titleError, description: vm.messengError, isOn: $vm.showAlert)
                     }
                 }
             }
@@ -110,9 +85,22 @@ struct NewWordView: View {
                 .font(.montserrat(.regular, size: 17))
         }
     }
-    
+   
     private var saveButton: some View {
         Button {
+            guard !vm.arabWord.isEmpty,
+                  !vm.rusWord.isEmpty,
+                  let imageMainData = imageMain.pngData(),
+                  let imageAssociateData = associateImage.pngData(),
+                  !imageMainData.isEmpty,
+                  !imageAssociateData.isEmpty else {
+                
+                vm.showAlert = true
+                vm.titleError = "Не жульничай 🤓"
+                vm.messengError = "Сначала заполни все поля (вставь картинки и слово с переводом)"
+                return
+            }
+            
             saveWord()
             dismiss()
         } label: {
@@ -160,24 +148,31 @@ struct NewWordView: View {
             
             TextField(text: $vm.rusWord, label: {
                 Text("Текст")
+                    .foregroundColor(Color.custom.lightGray)
                     .font(.montserrat(.regular, size: 17))
             })
             .padding(.top, 20)
             
             Divider()
+                .frame(minHeight: 1)
+                .background(Color.custom.lightGray)
         }
     }
     
     private var translateArabicView: some View {
         VStack(alignment: .leading) {
             CustomWordAndDetailView(text: "Перевод", description: "на арабском языке")
-    
-            Text(vm.arabWord)
-                    .font(.montserrat(.regular, size: 25))
-            
+           
+            TextField(text: $vm.arabWord, label: {
+                Text("Текст")
+                    .foregroundColor(Color.custom.lightGray)
+                    .font(.montserrat(.regular, size: 17))
+            })
             .padding(.top, 20)
             
             Divider()
+                .frame(minHeight: 1)
+                .background(Color.custom.lightGray)
         }
     }
     
@@ -190,18 +185,19 @@ struct NewWordView: View {
             Spacer()
             
             Button {
-        
+                speechService.say(vm.arabWord)
             } label: {
                 Image(systemName: "play.fill")
                     .foregroundColor(Color.custom.yellow)
                     .padding(12)
-                    .background(Circle().fill(Color.white))
+                    .background(Circle().fill(Color.custom.white))
                     .overlay(Circle().stroke(Color.custom.yellow, lineWidth: 2))
             }
         }
     }
-
+    
     private func saveWord() {
+        
         guard let imageMainData = imageMain.pngData(), let imageAssociateData = associateImage.pngData() else { return }
 
         let newWord = Words(context: self.moc)
@@ -217,10 +213,11 @@ struct NewWordView: View {
            print(error.localizedDescription)
          }
     }
+ 
 }
 
 #Preview {
-    CustomAlertError(title: "Ошибка", description: "Ошиаолоааовлаол аовоатаотва", isOn: .constant(true))
+    NewWordView()
 }
 
 struct CustomAlertError: View {
@@ -270,3 +267,19 @@ struct CustomAlertError: View {
     }
 }
 
+class SpeechService {
+    
+    private let synthesizer = AVSpeechSynthesizer()
+    private var rate = AVSpeechUtteranceDefaultSpeechRate
+    
+    func say(_ phrase: String) {
+        
+        let utterance = AVSpeechUtterance(string: phrase)
+        utterance.rate = rate
+        utterance.voice = AVSpeechSynthesisVoice(language: "ar-SA")
+        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.voice.premium.ar-001.Maged")
+        
+        synthesizer.speak(utterance)
+    }
+
+}
