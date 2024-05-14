@@ -69,15 +69,6 @@ struct CardWordsItem: View {
         }
     }
     
-    private var textsCardWords: some View {
-        VStack(spacing: 6) {
-            Text(textTranslate ?? "Арабское")
-                .font(.montserrat(.semibold, size: 30))
-            Text(textTitle ?? "Перевод")
-                .font(.montserrat(.light, size: 18))
-        }
-    }
-    
     private var imagesCardWords: some View {
         VStack {
             if let uiImageMain = uiImageMain {
@@ -115,6 +106,54 @@ struct CardWordsItem: View {
             }
         }
     }
+
+    
+    private var textsCardWords: some View {
+        VStack(spacing: 6) {
+            Text(textTranslate ?? "Арабское")
+                .font(.montserrat(.semibold, size: 30))
+            Text(textTitle ?? "Перевод")
+                .font(.montserrat(.light, size: 18))
+        }
+    }
+    
+//    private var imagesCardWords: some View {
+//        VStack {
+//            if let uiImageMain = uiImageMain {
+//                Image(uiImage: uiImageMain) // -  основная фотка
+//                    .resizable()
+//                    .frame(width: 300, height: stateImageAssociate ? 208 : 380)
+//                    .clipShape(RoundedRectangle(cornerRadius: 10))
+//            }  else {
+//               Image(systemName: "photo")
+//                    .resizable()
+//                    .frame(width: 300, height: 208)
+//                    .clipShape(RoundedRectangle(cornerRadius: 10))
+//                    .shimmering()
+//            }
+//            
+//            withAnimation {
+//                
+//                Group {
+//                    
+//                    if stateImageAssociate {
+//                        if let uiImageAssociate = uiImageAssociate {
+//                            Image(uiImage: uiImageAssociate) // -  ассоциация
+//                                .resizable()
+//                                .clipShape(RoundedRectangle(cornerRadius: 10))
+//                                .frame(width: 280, height: 183)
+//                        } else {
+//                            Image(systemName: "photo")
+//                                .resizable()
+//                                .frame(width: 280, height: 183)
+//                                .clipShape(RoundedRectangle(cornerRadius: 10))
+//                                .shimmering()
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     private func loadImageAsynchronously(imageData: Data?, completion: @escaping (UIImage?) -> Void) {
         let image: UIImage? = imageData.flatMap { UIImage(data: $0) }
