@@ -41,6 +41,7 @@ struct DictionaryView: View {
                     }
                 )
                 .navigationTitle("Словарь")
+                
                 .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
                 
                 .toolbar {

@@ -33,11 +33,11 @@ struct NewWordView: View {
                 ZStack {
                     VStack(spacing: 25) {
                         HStack(spacing: 5) {
-                            CustomAddView(image: $imageMain, showSheet: $showMainSheet, title: "Основная", description: "Основная картинка \n слова")
+                            CustomAddView(image: $imageMain, showSheet: $showMainSheet, title: "Картинка", description: "Вставьте картинку \n для слова")
                             
-                            Spacer()
-                            
-                            CustomAddView(image: $associateImage, showSheet: $showAssSheet, title: "Ассоциация", description: "Картинка похожая на \n звучание слова")
+//                            Spacer()
+//                            
+//                            CustomAddView(image: $associateImage, showSheet: $showAssSheet, title: "Ассоциация", description: "Картинка похожая на \n звучание слова")
                         }
                         .padding(.horizontal, 15)
                         .padding(.top, 25)
@@ -91,9 +91,9 @@ struct NewWordView: View {
             guard !vm.arabWord.isEmpty,
                   !vm.rusWord.isEmpty,
                   let imageMainData = imageMain.pngData(),
-                  let imageAssociateData = associateImage.pngData(),
-                  !imageMainData.isEmpty,
-                  !imageAssociateData.isEmpty else {
+//                  let imageAssociateData = associateImage.pngData(),
+                  !imageMainData.isEmpty
+                /*  !imageAssociateData.isEmpty*/ else {
                 
                 vm.showAlert = true
                 vm.titleError = "Не жульничай 🤓"
@@ -198,11 +198,11 @@ struct NewWordView: View {
     
     private func saveWord() {
         
-        guard let imageMainData = imageMain.pngData(), let imageAssociateData = associateImage.pngData() else { return }
+        guard let imageMainData = imageMain.jpegData(compressionQuality: 1.0) /*let imageAssociateData = associateImage.jpegData(compressionQuality: 1.0)*/ else { return }
 
         let newWord = Words(context: self.moc)
         newWord.imageMain = imageMainData
-        newWord.associatImage = imageAssociateData
+//        newWord.associatImage = imageAssociateData
     
         newWord.title = vm.rusWord
         newWord.translate = vm.arabWord

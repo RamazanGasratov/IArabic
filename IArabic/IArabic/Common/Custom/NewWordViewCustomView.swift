@@ -21,7 +21,7 @@ struct CustomAddView: View {
             if let imgData = image.pngData(), imgData.count > 0 {
                 Image(uiImage: image)
                     .resizable()
-                    .frame(width: 168, height: 192)
+                    .frame(width: 250, height: 170)
                     .scaledToFill()
                     .cornerRadius(20)
            
@@ -54,7 +54,7 @@ struct CustomAddView: View {
                             .foregroundColor(Color.custom.lightGray)
                             .font(.montserrat(.semibold, size: 14))
                     }
-                    .frame(width: 164, height: 160)
+                    .frame(width: 250, height: 160)
                     .padding(.vertical, 20)
                     .background(Color.custom.white)
                     .cornerRadius(20)
