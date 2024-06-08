@@ -47,7 +47,7 @@ struct CardWordsItem: View {
         .background(Color.custom.backgroundColor)
         .onAppear {
             loadImageAsynchronously(imageData: imageMain) { image in
-                self.uiImageMain = image
+                    self.uiImageMain = image
             }
             loadImageAsynchronously(imageData: imageAssociate) { image in
                 self.uiImageAssociate = image

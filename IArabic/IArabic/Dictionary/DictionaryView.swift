@@ -17,8 +17,7 @@ struct DictionaryView: View {
     
     let categories = [
         Category(id: "OneMed", name: "первый том"),
-        Category(id: "TwoMed", name: "второй том"),
-        Category(id: "ThreeMed", name: "третий том")
+        Category(id: "TwoMed", name: "второй том")
     ]
     
     var body: some View {

@@ -110,23 +110,14 @@ struct CardNewWord2: View {
                                     Text(words[index].title ??  "Арабское")
                                         .font(.montserrat(.regular, size: 18))
                                     
-                                    if let data = words[index].imageMain, let uiImage = UIImage(data: data) {
-                                        Image(uiImage: uiImage) // -  основная фотка
-                                            .resizable()
+                                    if let data = words[index].imageMain {
+                                        AsyncImage(data: data)
                                             .frame(width: 230, height: 300)
                                             .clipShape(RoundedRectangle(cornerRadius: 10))
                                     }
-                                    
-                                    
-//                                    if let data = words[index].associatImage, let uiImage = UIImage(data: data)  {
-//                                        Image(uiImage: uiImage) // -  основная фотка
-//                                            .resizable()
-//                                            .frame(width: 180, height: 130)
-//                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-//                                    }
-                                
                                 }
-                                .frame(width: 300, height: 430)
+                                
+                                .frame(width: 300, height: 450)
                                 .background(Color.custom.white)
                                 .cornerRadius(20)
                                 
@@ -135,6 +126,7 @@ struct CardNewWord2: View {
                             .cornerRadius(20)
                             
                             audioView(text: words[index].translate ?? "")
+                                .offset(y: 10)
                             
                         }
                         .clipShape(RoundedRectangle(cornerRadius: 25))
@@ -279,5 +271,41 @@ struct BackgroundEmptyView: View {
         .background(Color.custom.yellow)
         .cornerRadius(20)
         .shadow(color: .black.opacity(0.6), radius: 50, x: 1, y: 1)
+    }
+}
+
+
+import Combine
+
+class ImageLoader: ObservableObject {
+    @Published var image: UIImage? = nil
+
+    func loadImage(from data: Data?) {
+        guard let data = data else { return }
+        DispatchQueue.global().async {
+            let loadedImage = UIImage(data: data)
+            DispatchQueue.main.async {
+                self.image = loadedImage
+            }
+        }
+    }
+}
+
+struct AsyncImage: View {
+    @StateObject private var loader = ImageLoader()
+    let data: Data
+
+    var body: some View {
+        Group {
+            if let image = loader.image {
+                Image(uiImage: image)
+                    .resizable()
+            } else {
+                ProgressView()
+            }
+        }
+        .onAppear {
+            loader.loadImage(from: data)
+        }
     }
 }
